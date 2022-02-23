@@ -27,8 +27,7 @@ class IntroState(BaseState):
         font = pg.font.SysFont('SourceCodePro', 24)
         text = font.render('Press any key to continue...', False, (255, 255, 255))
         rect = text.get_rect()
-        rect.centerx = self._window.get_rect().centerx
-        rect.centery = 670
+        rect.center = (self._window.get_rect().centerx, 670)
         self._graphics_data.append((text, rect, 1))
         self._update_rects.append(rect)
 

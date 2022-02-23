@@ -23,6 +23,9 @@ class App:
     def run(self):
         clock = pg.time.Clock()
         while True:
+            if not pg.get_init():
+                return
+
             self.state_manager.events()
             self.state_manager.loop()
             self.state_manager.render()

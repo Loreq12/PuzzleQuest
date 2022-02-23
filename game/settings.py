@@ -17,4 +17,5 @@ class Window(Enum):
 class ResourceGraphics(Enum):
     SPLASH = 'splash_screen.jpg'
     MAIN_MENU = 'main_menu_screen.jpg'
+    BUTTON = 'button.png'
     TEST = 'test_image.jpg'

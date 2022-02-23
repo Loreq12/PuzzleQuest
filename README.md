@@ -1,5 +1,4 @@
 # Py Quest
----
 This game is recreaction of popular match-3 game _Puzzle Quest_
 
 ## Preparing environment
@@ -13,7 +12,6 @@ poetry install
 ```
 
 ## Run
----
 To run the game just type:
 ```
 python -m game
