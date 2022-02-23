@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "puzzlequest"
+name = "pyquest"
 version = "0.1.0"
 description = ""
 authors = ["Cezary Fafara"]
