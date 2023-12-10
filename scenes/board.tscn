@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://be442fhi42gni"]
+
+[ext_resource type="Script" path="res://scenes/board.gd" id="1_aq3ae"]
+[ext_resource type="Script" path="res://scenes/gems_container.gd" id="2_s1mx3"]
+
+[node name="Board" type="Node2D"]
+script = ExtResource("1_aq3ae")
+
+[node name="Gems" type="Node2D" parent="."]
+script = ExtResource("2_s1mx3")
