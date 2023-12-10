@@ -38,6 +38,7 @@ func _ready():
 			
 				break
 			
+			gem.connect("gem_selected", _handle_gem_selection)
 			add_child(gem)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -61,3 +62,15 @@ func get_neighbor_gem(gem: Gem, direction: GEM_DIRECTION):
 		return target[0]
 	else:
 		return null
+
+# EVENTS
+func _handle_gem_selection(gem: Gem):
+	var result = get_children().filter(func(g): return g.selected)
+	if len(result) > 1:
+		print("There is more")
+		for target in result.filter(func(g): return g != gem):
+			target.selected = false
+			print(target)
+	else:
+		print("One or nothing")
+	

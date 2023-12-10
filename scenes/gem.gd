@@ -5,7 +5,7 @@ class_name Gem
 var tween: Tween
 
 # SIGNALS
-signal gem_selected(gem)
+signal gem_selected(Gem)
 
 # DEF
 enum GEM_TYPE_E {RED, BLUE, YELLOW, GREEN}
@@ -14,15 +14,22 @@ enum GEM_TYPE_E {RED, BLUE, YELLOW, GREEN}
 @export var gem_type : GEM_TYPE_E
 @export var board_x: int
 @export var board_y: int
+@export var selected: bool
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	tween = create_tween()
+	position = _calculate_gem_position_on_scene()
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	position = _calculate_gem_position_on_scene()
+	if selected:
+		$MagicCircle.visible = true
+		$AnimationPlayer.play("selected gem")
+	else:
+		$MagicCircle.visible = false
+		$AnimationPlayer.stop()
 
 func _to_string():
 	return str("[GEM: x-> ", board_x, ", y-> ", board_y, ", color-> ", gem_type, "]")
@@ -63,8 +70,7 @@ func _input_event_handle(viewport, event, shape_idx):
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 			if $AnimationPlayer.is_playing():
-				$MagicCircle.visible = false
-				$AnimationPlayer.stop()
+				selected = false
 			else:
-				$MagicCircle.visible = true
-				$AnimationPlayer.play("selected gem")
+				selected = true
+				emit_signal("gem_selected", self)
