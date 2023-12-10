@@ -68,5 +68,3 @@ func _input_event_handle(viewport, event, shape_idx):
 			else:
 				$MagicCircle.visible = true
 				$AnimationPlayer.play("selected gem")
-			print(gem_type == GEM_TYPE_E.RED)
-			print(event)
