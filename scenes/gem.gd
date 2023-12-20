@@ -2,8 +2,6 @@ extends Node2D
 
 class_name Gem
 
-var tween: Tween
-
 # SIGNALS
 signal gem_selected(Gem)
 
@@ -16,20 +14,27 @@ enum GEM_TYPE_E {RED, BLUE, YELLOW, GREEN}
 @export var board_y: int
 @export var selected: bool
 
+# GLOBALS
+var position_changed: bool = false
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	tween = create_tween()
 	position = _calculate_gem_position_on_scene()
-
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+	if position_changed:
+		var target: Vector2 = _calculate_gem_position_on_scene()
+		var tween := create_tween()
+		tween.tween_property(self, "position", target, .4)
+		position_changed = false
+		selected = false
 	if selected:
-		$MagicCircle.visible = true
 		$AnimationPlayer.play("selected gem")
 	else:
-		$MagicCircle.visible = false
 		$AnimationPlayer.stop()
+	$MagicCircle.visible = selected
+	
 
 func _to_string():
 	return str("[GEM: x-> ", board_x, ", y-> ", board_y, ", color-> ", gem_type, "]")
@@ -44,6 +49,7 @@ func setup_gem_color():
 func setup_gem_position_on_board(x: int, y: int):
 	board_x = x
 	board_y = y
+	position_changed = true
 
 
 func _calculate_gem_position_on_scene():

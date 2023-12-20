@@ -4,8 +4,7 @@ class_name GemContainer
 
 enum GEM_DIRECTION {LEFT, RIGHT, TOP, BOTTOM}
 
-var BOARD_WIDTH = 8
-var BOARD_HEIGHT = 8
+var BOARD_SIZE = 8
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -15,8 +14,8 @@ func _ready():
 	print(str("Seed: ", random_seed))
 	seed(random_seed)
 	
-	for y in range(BOARD_HEIGHT):
-		for x in range(BOARD_WIDTH):
+	for y in range(BOARD_SIZE):
+		for x in range(BOARD_SIZE):
 			var gem = preload("res://scenes/gem.tscn").instantiate()
 			gem.setup_gem_color()
 			gem.setup_gem_position_on_board(x, y)
@@ -62,6 +61,34 @@ func get_neighbor_gem(gem: Gem, direction: GEM_DIRECTION):
 		return target[0]
 	else:
 		return null
+		
+func get_gem_on_position(x: int, y: int):
+	return get_children().filter(func(g): return g.board_x == x and g.board_y == y)[0]
+
+func gems_are_neighbors(gem_1: Gem, gem_2: Gem):
+	return (gem_1.board_x == gem_2.board_x and abs(gem_1.board_y - gem_2.board_y) == 1) or (gem_1.board_y == gem_2.board_y and abs(gem_1.board_x - gem_2.board_x) == 1)
+	
+func check_for_matches():
+	var gem1: Gem
+	var gem2: Gem
+	var gem3: Gem
+	for y in range(BOARD_SIZE):
+		for x in range(BOARD_SIZE - 2):
+			gem1 = get_gem_on_position(x, y)
+			gem2 = get_gem_on_position(x + 1, y)
+			gem3 = get_gem_on_position(x + 2, y)
+			if gem1.gem_type == gem2.gem_type and gem2.gem_type == gem3.gem_type:
+				for i in range(3):
+					print(get_gem_on_position(x + i, y))
+
+	for y in range(BOARD_SIZE - 2):
+		for x in range(BOARD_SIZE):
+			gem1 = get_gem_on_position(x, y)
+			gem2 = get_gem_on_position(x, y + 1)
+			gem3 = get_gem_on_position(x, y + 2)
+			if gem1.gem_type == gem2.gem_type and gem2.gem_type == gem3.gem_type:
+				for i in range(3):
+					print(get_gem_on_position(x, y + i))
 
 # EVENTS
 func _handle_gem_selection(gem: Gem):
@@ -69,8 +96,16 @@ func _handle_gem_selection(gem: Gem):
 	if len(result) > 1:
 		print("There is more")
 		for target in result.filter(func(g): return g != gem):
-			target.selected = false
-			print(target)
+			if gems_are_neighbors(gem, target):
+				var source_x = gem.board_x
+				var source_y = gem.board_y
+				var target_x = target.board_x
+				var target_y = target.board_y
+				gem.setup_gem_position_on_board(target_x, target_y)
+				target.setup_gem_position_on_board(source_x, source_y)
+				check_for_matches()
+			else:
+				target.selected = false
 	else:
 		print("One or nothing")
 	
