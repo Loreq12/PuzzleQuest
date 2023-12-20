@@ -63,17 +63,23 @@ func _calculate_gem_position_on_scene():
 func _adjust_gem_color():
 	if gem_type == GEM_TYPE_E.RED:
 		$Sprite2D.modulate = Color(1, 0, 0)
+		$Particle.color = Color(1, 0, 0)
 	elif gem_type == GEM_TYPE_E.BLUE:
-		pass
+		$Sprite2D.modulate = Color(0, 0, 1)
+		$Particle.color = Color(0, 0, 1)
 	elif gem_type == GEM_TYPE_E.GREEN:
 		$Sprite2D.modulate = Color(0, 1, 0)
+		$Particle.color = Color(0, 1, 0)
 	elif gem_type == GEM_TYPE_E.YELLOW:
 		$Sprite2D.modulate = Color(1, 1, 0)
+		$Particle.color = Color(1, 1, 0)
 
 
 # EVENTS
 func _input_event_handle(viewport, event, shape_idx):
 	if event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
+			$Particle.emitting = true
 		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 			if $AnimationPlayer.is_playing():
 				selected = false
