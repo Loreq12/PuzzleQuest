@@ -4,6 +4,8 @@ class_name Gem
 
 # SIGNALS
 signal gem_selected(Gem)
+signal gem_finished_transition
+signal gem_destroyed(Vector2)
 
 # DEF
 enum GEM_TYPE_E {RED, BLUE, YELLOW, GREEN}
@@ -16,17 +18,20 @@ enum GEM_TYPE_E {RED, BLUE, YELLOW, GREEN}
 
 # GLOBALS
 var position_changed: bool = false
+var marked_to_be_destroyed: bool = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	position = _calculate_gem_position_on_scene()
+	$Particle.connect("finished", _destroy)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func _process(_delta):
 	if position_changed:
 		var target: Vector2 = _calculate_gem_position_on_scene()
 		var tween := create_tween()
 		tween.tween_property(self, "position", target, .4)
+		tween.connect("finished", _transition_after_select_is_finished)
 		position_changed = false
 		selected = false
 	if selected:
@@ -46,10 +51,16 @@ func setup_gem_color():
 	_adjust_gem_color()
 
 
-func setup_gem_position_on_board(x: int, y: int):
+func setup_gem_position_on_board(x: int, y: int, init: bool = false):
 	board_x = x
 	board_y = y
-	position_changed = true
+	if not init:
+		position_changed = true
+
+
+func destroy():
+	$Sprite2D.visible = false
+	$Particle.emitting = true
 
 
 func _calculate_gem_position_on_scene():
@@ -59,6 +70,8 @@ func _calculate_gem_position_on_scene():
 	
 	return Vector2(x, y)
 	
+func _destroy():
+	emit_signal("gem_destroyed", Vector2(board_x, board_y))
 
 func _adjust_gem_color():
 	if gem_type == GEM_TYPE_E.RED:
@@ -76,10 +89,14 @@ func _adjust_gem_color():
 
 
 # EVENTS
-func _input_event_handle(viewport, event, shape_idx):
+func _transition_after_select_is_finished():
+	emit_signal("gem_finished_transition")
+
+
+func _input_event_handle(_viewport, event, _shape_idx):
 	if event is InputEventMouseButton:
-		if event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
-			$Particle.emitting = true
+		#if event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
+			#$Particle.emitting = true
 		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 			if $AnimationPlayer.is_playing():
 				selected = false

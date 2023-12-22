@@ -96,7 +96,7 @@ libraries = {
 position = Vector2(-1, 0)
 emitting = false
 amount = 1024
-lifetime = 0.3
+lifetime = 0.2
 one_shot = true
 fixed_fps = 60
 particle_flag_align_y = true
@@ -106,7 +106,7 @@ gravity = Vector2(2.08165e-12, 2.08165e-12)
 initial_velocity_min = 31.15
 initial_velocity_max = 423.68
 scale_amount_min = 0.0
-scale_amount_max = 1.5
+scale_amount_max = 3.0
 color = Color(0, 1, 1, 1)
 
 [connection signal="input_event" from="Area2D" to="." method="_input_event_handle"]
