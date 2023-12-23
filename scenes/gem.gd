@@ -18,7 +18,7 @@ enum GEM_TYPE_E {RED, BLUE, YELLOW, GREEN}
 
 # GLOBALS
 var position_changed: bool = false
-var marked_to_be_destroyed: bool = false
+var marked_to_be_deleted: bool = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -30,7 +30,7 @@ func _process(_delta):
 	if position_changed:
 		var target: Vector2 = _calculate_gem_position_on_scene()
 		var tween := create_tween()
-		tween.tween_property(self, "position", target, .4)
+		tween.tween_property(self, "position", target, .4).set_trans(Tween.TRANS_QUART)
 		tween.connect("finished", _transition_after_select_is_finished)
 		position_changed = false
 		selected = false
@@ -39,7 +39,6 @@ func _process(_delta):
 	else:
 		$AnimationPlayer.stop()
 	$MagicCircle.visible = selected
-	
 
 func _to_string():
 	return str("[GEM: x-> ", board_x, ", y-> ", board_y, ", color-> ", gem_type, "]")
@@ -50,18 +49,16 @@ func setup_gem_color():
 	gem_type = GEM_TYPE_E.values()[randi() % GEM_TYPE_E.size()]
 	_adjust_gem_color()
 
-
 func setup_gem_position_on_board(x: int, y: int, init: bool = false):
 	board_x = x
 	board_y = y
 	if not init:
 		position_changed = true
 
-
 func destroy():
 	$Sprite2D.visible = false
 	$Particle.emitting = true
-
+	marked_to_be_deleted = true
 
 func _calculate_gem_position_on_scene():
 	# Position on board + offset from sprite center + margin
@@ -72,6 +69,7 @@ func _calculate_gem_position_on_scene():
 	
 func _destroy():
 	emit_signal("gem_destroyed", Vector2(board_x, board_y))
+	queue_free()
 
 func _adjust_gem_color():
 	if gem_type == GEM_TYPE_E.RED:
@@ -87,11 +85,9 @@ func _adjust_gem_color():
 		$Sprite2D.modulate = Color(1, 1, 0)
 		$Particle.color = Color(1, 1, 0)
 
-
 # EVENTS
 func _transition_after_select_is_finished():
 	emit_signal("gem_finished_transition")
-
 
 func _input_event_handle(_viewport, event, _shape_idx):
 	if event is InputEventMouseButton:
