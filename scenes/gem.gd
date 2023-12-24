@@ -59,6 +59,12 @@ func destroy():
 	$Sprite2D.visible = false
 	$Particle.emitting = true
 	marked_to_be_deleted = true
+	
+func disable_interation():
+	$Collider.set_pickable(false)
+
+func enable_interation():
+	$Collider.set_pickable(true)
 
 func _calculate_gem_position_on_scene():
 	# Position on board + offset from sprite center + margin

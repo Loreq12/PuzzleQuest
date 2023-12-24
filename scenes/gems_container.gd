@@ -19,6 +19,14 @@ func _prepare_gem(v: Vector2):
 	
 	return gem
 
+func _disable_interaction():
+	for gem in get_children():
+		gem.disable_interation()
+
+func _enable_interaction():
+	for gem in get_children():
+		gem.enable_interation()
+	
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	randomize()
@@ -53,8 +61,6 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
 	pass
-	#var qq = get_children().filter(func(g): return g.board_x == 6)
-	#print("tst")
 
 func generate_gem_to_fill_board(board_x: int, board_y: int):
 	var gem = _prepare_gem(Vector2(board_x, -1))
@@ -124,6 +130,8 @@ func check_for_matches():
 					_destroy = get_gem_on_position(x, y + i)
 					to_be_destroyed[str(_destroy)] = _destroy
 	
+	if to_be_destroyed.is_empty():
+		print("nothing to destroy")
 	return to_be_destroyed.values()
 
 # EVENTS
@@ -131,6 +139,7 @@ func _handle_gem_destroyed(v: Vector2):
 	if not destroyed.is_empty():
 		destroyed.erase(v)
 		if destroyed.is_empty():
+			print("Empty")
 			# All gems have finished transition/destruction
 			var gem_count_in_column = []
 			for column in range(BOARD_SIZE):
@@ -159,9 +168,13 @@ func _handle_gem_transition_finished():
 		swap_gems_position(revert_gems[0], revert_gems[1])
 		revert_gems = []
 	else:
+		# This "else" is triggered each time gem transitions.
+		# Should be only one when all have finished
 		if not is_board_filled():
 			return
 		var matches = check_for_matches()
+		if matches.is_empty():
+			_enable_interaction()
 		for gem_to_destroy in matches:
 			destroyed[Vector2(gem_to_destroy.board_x, gem_to_destroy.board_y)] = gem_to_destroy
 			gem_to_destroy.destroy()
@@ -169,6 +182,7 @@ func _handle_gem_transition_finished():
 func _handle_gem_selection(gem: Gem):
 	var result = get_children().filter(func(g): return g.selected)
 	if len(result) > 1:
+		_disable_interaction()
 		for target in result.filter(func(g): return g != gem):
 			if gems_are_neighbors(gem, target):
 				swap_gems_position(gem, target)
