@@ -1,4 +1,4 @@
-extends Node2D
+extends Container
 
 class_name GemContainer
 
@@ -8,11 +8,12 @@ var BOARD_SIZE = 8
 
 var revert_gems = []
 var destroyed = {}
+var container_padding: Vector2 = Vector2.ZERO
 
 func _prepare_gem(v: Vector2):
-	var gem = preload("res://scenes/gem.tscn").instantiate()
+	var gem = preload("res://scenes/gem/gem.tscn").instantiate()
 	gem.setup_gem_color()
-	gem.setup_gem_position_on_board(v.x, v.y, true)
+	gem.setup_gem_position_on_board(v, container_padding, true)
 	gem.connect("gem_finished_transition", _handle_gem_transition_finished)
 	gem.connect("gem_selected", _handle_gem_selection)
 	gem.connect("gem_destroyed", _handle_gem_destroyed)
@@ -34,6 +35,11 @@ func _ready():
 	var random_seed: int = 2642849264
 	print(str("Seed: ", random_seed))
 	seed(random_seed)
+	
+	var enemy_panel: VBoxContainer = get_node("../EnemyPanel")
+	var player_panel: VBoxContainer = get_node("../PlayerPanel")
+	var viewport_size = Vector2(get_viewport().size)
+	var container_size: Vector2 = viewport_size - enemy_panel.size - player_panel.size
 	
 	for y in range(BOARD_SIZE):
 		for x in range(BOARD_SIZE):
@@ -62,10 +68,10 @@ func _ready():
 func _process(_delta):
 	pass
 
-func generate_gem_to_fill_board(board_x: int, board_y: int):
-	var gem = _prepare_gem(Vector2(board_x, -1))
+func generate_gem_to_fill_board(v: Vector2i):
+	var gem: Gem = _prepare_gem(Vector2i(v.x, -1))
 	add_child(gem)
-	gem.setup_gem_position_on_board(board_x, board_y)
+	gem.setup_gem_position_on_board(v, container_padding)
 
 func get_neighbor_gem(gem: Gem, direction: GEM_DIRECTION):
 	var target: Array
@@ -91,12 +97,10 @@ func gems_are_neighbors(gem_1: Gem, gem_2: Gem):
 	return (gem_1.board_x == gem_2.board_x and abs(gem_1.board_y - gem_2.board_y) == 1) or (gem_1.board_y == gem_2.board_y and abs(gem_1.board_x - gem_2.board_x) == 1)
 
 func swap_gems_position(gem_1: Gem, gem_2: Gem):
-	var source_x = gem_1.board_x
-	var source_y = gem_1.board_y
-	var target_x = gem_2.board_x
-	var target_y = gem_2.board_y
-	gem_1.setup_gem_position_on_board(target_x, target_y)
-	gem_2.setup_gem_position_on_board(source_x, source_y)
+	var source: Vector2 = Vector2(gem_1.board_x, gem_1.board_y)
+	var target: Vector2 = Vector2(gem_2.board_x, gem_2.board_y)
+	gem_1.setup_gem_position_on_board(target, container_padding)
+	gem_2.setup_gem_position_on_board(source, container_padding)
 
 func is_board_filled():
 	var children = get_children()
@@ -130,8 +134,8 @@ func check_for_matches():
 					_destroy = get_gem_on_position(x, y + i)
 					to_be_destroyed[str(_destroy)] = _destroy
 	
-	if to_be_destroyed.is_empty():
-		print("nothing to destroy")
+	#if to_be_destroyed.is_empty():
+		#print("nothing to destroy")
 	return to_be_destroyed.values()
 
 # EVENTS
@@ -139,7 +143,6 @@ func _handle_gem_destroyed(v: Vector2):
 	if not destroyed.is_empty():
 		destroyed.erase(v)
 		if destroyed.is_empty():
-			print("Empty")
 			# All gems have finished transition/destruction
 			var gem_count_in_column = []
 			for column in range(BOARD_SIZE):
@@ -153,17 +156,17 @@ func _handle_gem_destroyed(v: Vector2):
 						break
 					var current_gem: Gem = gems_in_column[gem_idx]
 					if gem_idx == 0 and current_gem.board_y != BOARD_SIZE - 1:
-						current_gem.setup_gem_position_on_board(current_gem.board_x, BOARD_SIZE - 1)
+						current_gem.setup_gem_position_on_board(Vector2(current_gem.board_x, BOARD_SIZE - 1), container_padding)
 					var next_gem: Gem = gems_in_column[gem_idx + 1]
 					if current_gem.board_y - next_gem.board_y > 1:
-						next_gem.setup_gem_position_on_board(current_gem.board_x, current_gem.board_y - 1)
+						next_gem.setup_gem_position_on_board(Vector2(current_gem.board_x, current_gem.board_y - 1), container_padding)
 			for idx in range(gem_count_in_column.size()):
 				if gem_count_in_column[idx] == BOARD_SIZE:
 					continue
 				for i in range(BOARD_SIZE - gem_count_in_column[idx] - 1, -1, -1):
-					generate_gem_to_fill_board(idx, i)
+					generate_gem_to_fill_board(Vector2(idx, i))
 
-func _handle_gem_transition_finished():
+func _handle_gem_transition_finished(_gem: Gem):
 	if revert_gems:
 		swap_gems_position(revert_gems[0], revert_gems[1])
 		revert_gems = []
@@ -174,21 +177,28 @@ func _handle_gem_transition_finished():
 			return
 		var matches = check_for_matches()
 		if matches.is_empty():
+			print("no matches")
 			_enable_interaction()
+			return
 		for gem_to_destroy in matches:
 			destroyed[Vector2(gem_to_destroy.board_x, gem_to_destroy.board_y)] = gem_to_destroy
 			gem_to_destroy.destroy()
 		
 func _handle_gem_selection(gem: Gem):
 	var result = get_children().filter(func(g): return g.selected)
+	# Stont bugi wyszli!
 	if len(result) > 1:
 		_disable_interaction()
-		for target in result.filter(func(g): return g != gem):
-			if gems_are_neighbors(gem, target):
-				swap_gems_position(gem, target)
-				var gems_to_destroy = check_for_matches()
-				if not gems_to_destroy:
-					revert_gems.append(gem)
-					revert_gems.append(target)
+		for target in result:
+			if target != gem:
+				if gems_are_neighbors(gem, target):
+					swap_gems_position(gem, target)
+					var gems_to_destroy = check_for_matches()
+					if not gems_to_destroy:
+						revert_gems.append(gem)
+						revert_gems.append(target)
+				else:
+					target.selected = false
+					_enable_interaction()
 			else:
-				target.selected = false
+				target.selected = true

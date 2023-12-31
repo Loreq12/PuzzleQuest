@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://3evkn4mghfec"]
 
-[ext_resource type="Script" path="res://scenes/gem.gd" id="1_ietch"]
-[ext_resource type="Texture2D" uid="uid://b4ym3leq7h3vu" path="res://icon.svg" id="2_ntn22"]
+[ext_resource type="Script" path="res://scenes/gem/gem.gd" id="1_ietch"]
+[ext_resource type="Texture2D" uid="uid://k7hb6fmilg4g" path="res://scenes/gem/sprites/x2.png" id="2_w8jyn"]
 [ext_resource type="Texture2D" uid="uid://c2yc5hji6r7bt" path="res://magic_circle.png" id="3_4x7dl"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_v47b8"]
@@ -69,15 +69,16 @@ _data = {
 "selected gem": SubResource("Animation_e0fhl")
 }
 
-[node name="Gem" type="Node2D"]
+[node name="Gem" type="Control"]
+layout_mode = 3
+anchors_preset = 0
 script = ExtResource("1_ietch")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("2_ntn22")
+texture = ExtResource("2_w8jyn")
 
 [node name="MagicCircle" type="Sprite2D" parent="."]
-visible = false
-position = Vector2(0.799709, -0.250017)
+position = Vector2(2.08165e-12, 2.08165e-12)
 scale = Vector2(0.2, 0.2)
 texture = ExtResource("3_4x7dl")
 

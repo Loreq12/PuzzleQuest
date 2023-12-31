@@ -1,10 +1,10 @@
-extends Node2D
+extends Control
 
 class_name Gem
 
 # SIGNALS
 signal gem_selected(Gem)
-signal gem_finished_transition
+signal gem_finished_transition(Gem)
 signal gem_destroyed(Vector2)
 
 # DEF
@@ -19,9 +19,12 @@ enum GEM_TYPE_E {RED, BLUE, YELLOW, GREEN}
 # GLOBALS
 var position_changed: bool = false
 var marked_to_be_deleted: bool = false
+var padding: Vector2 = Vector2.ZERO
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	if get_viewport().size.y <= 1080:
+		scale = Vector2(.9, .9)
 	position = _calculate_gem_position_on_scene()
 	$Particle.connect("finished", _destroy)
 
@@ -41,7 +44,7 @@ func _process(_delta):
 	$MagicCircle.visible = selected
 
 func _to_string():
-	return str("[GEM: x-> ", board_x, ", y-> ", board_y, ", color-> ", gem_type, "]")
+	return str("[GEM: x-> ", board_x, ", y-> ", board_y, ", color-> ", GEM_TYPE_E.BLUE, "]")
 
 #######
 
@@ -49,9 +52,10 @@ func setup_gem_color():
 	gem_type = GEM_TYPE_E.values()[randi() % GEM_TYPE_E.size()]
 	_adjust_gem_color()
 
-func setup_gem_position_on_board(x: int, y: int, init: bool = false):
-	board_x = x
-	board_y = y
+func setup_gem_position_on_board(v: Vector2i, container_padding: Vector2, init: bool = false):
+	board_x = v.x
+	board_y = v.y
+	padding = container_padding
 	if not init:
 		position_changed = true
 
@@ -66,10 +70,14 @@ func disable_interation():
 func enable_interation():
 	$Collider.set_pickable(true)
 
+func _get_sprite_size_with_scale():
+	return $Sprite2D.get_rect().size * scale
+	
 func _calculate_gem_position_on_scene():
-	# Position on board + offset from sprite center + margin
-	var x = board_x * $Sprite2D.get_rect().size.x + ($Sprite2D.get_rect().size.x / 2) + board_x + ($Sprite2D.get_rect().size.x / 2 * board_x)
-	var y = board_y * $Sprite2D.get_rect().size.y + ($Sprite2D.get_rect().size.y / 2) + board_y + ($Sprite2D.get_rect().size.y / 2 * board_y)
+	# Position on board + offset from sprite center + offset from container border
+	var sprite_size: Vector2 = _get_sprite_size_with_scale()
+	var x = board_x * sprite_size.x + (sprite_size.x / 2)
+	var y = board_y * sprite_size.y + (sprite_size.y / 2)
 	
 	return Vector2(x, y)
 	
@@ -93,7 +101,7 @@ func _adjust_gem_color():
 
 # EVENTS
 func _transition_after_select_is_finished():
-	emit_signal("gem_finished_transition")
+	emit_signal("gem_finished_transition", self)
 
 func _input_event_handle(_viewport, event, _shape_idx):
 	if event is InputEventMouseButton:

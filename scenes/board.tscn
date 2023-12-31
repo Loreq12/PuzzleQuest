@@ -1,8 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://be442fhi42gni"]
-
-[ext_resource type="Script" path="res://scenes/gems_container.gd" id="2_s1mx3"]
-
-[node name="Board" type="Node2D"]
-
-[node name="Gems" type="Node2D" parent="."]
-script = ExtResource("2_s1mx3")
