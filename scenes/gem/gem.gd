@@ -23,19 +23,19 @@ var padding: Vector2 = Vector2.ZERO
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	if get_viewport().size.y <= 1080:
-		scale = Vector2(.9, .9)
+	#if get_viewport().size.y <= 1080:
+		#scale = Vector2(.9, .9)
 	position = _calculate_gem_position_on_scene()
-	$Particle.connect("finished", _destroy)
+	#$Particle.connect("finished", _destroy)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(_delta):
-	if position_changed:
-		var target: Vector2 = _calculate_gem_position_on_scene()
-		var tween := create_tween()
-		tween.tween_property(self, "position", target, .4).set_trans(Tween.TRANS_QUART)
-		tween.connect("finished", _transition_after_select_is_finished)
-		position_changed = false
+#func _process(_delta):
+	#if position_changed:
+		#var target: Vector2 = _calculate_gem_position_on_scene()
+		#var tween := create_tween()
+		#tween.tween_property(self, "position", target, .4).set_trans(Tween.TRANS_QUART)
+		#tween.connect("finished", _transition_after_select_is_finished)
+		#position_changed = false
 		#selected = false
 	#if selected:
 		#$AnimationPlayer.play("selected gem")
@@ -76,8 +76,8 @@ func _get_sprite_size_with_scale():
 func _calculate_gem_position_on_scene():
 	# Position on board + offset from sprite center + offset from container border
 	var sprite_size: Vector2 = _get_sprite_size_with_scale()
-	var x = board_x * sprite_size.x + (sprite_size.x / 2)
-	var y = board_y * sprite_size.y + (sprite_size.y / 2)
+	var x = board_x * sprite_size.x
+	var y = board_y * sprite_size.y
 	
 	return Vector2(x, y)
 	
@@ -102,6 +102,17 @@ func _adjust_gem_color():
 # EVENTS
 func _transition_after_select_is_finished():
 	emit_signal("gem_finished_transition", self)
+
+func _unhandled_input(event):
+	#used for total size of gem
+	#print(get_combined_minimum_size())
+	if event is InputEventKey:
+		if event.pressed and event.keycode == KEY_T:
+			$StateMachine.transition(self.position, Vector2(300, 800))
+		elif event.pressed and event.keycode == KEY_R:
+			$StateMachine.revert()
+		elif event.pressed and event.keycode == KEY_D:
+			$StateMachine.destroy()
 
 func _input_event_handle(_viewport, event, _shape_idx):
 	if event is InputEventMouseButton:

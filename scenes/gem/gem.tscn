@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://3evkn4mghfec"]
+[gd_scene load_steps=14 format=3 uid="uid://3evkn4mghfec"]
 
 [ext_resource type="Script" path="res://scenes/gem/gem.gd" id="1_ietch"]
 [ext_resource type="Texture2D" uid="uid://k7hb6fmilg4g" path="res://scenes/gem/sprites/x2.png" id="2_w8jyn"]
@@ -6,6 +6,9 @@
 [ext_resource type="Script" path="res://scenes/gem/gem_state_machine.gd" id="4_0a22j"]
 [ext_resource type="Script" path="res://scenes/gem/states/gem_selected.gd" id="5_tb1oh"]
 [ext_resource type="Script" path="res://scenes/gem/states/gem_deselected.gd" id="6_kxygo"]
+[ext_resource type="Script" path="res://scenes/gem/states/gem_transitioned.gd" id="7_ijhj6"]
+[ext_resource type="Script" path="res://scenes/gem/states/gem_reverted.gd" id="8_1xbvn"]
+[ext_resource type="Script" path="res://scenes/gem/states/gem_destroyed.gd" id="9_pp1lh"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_v47b8"]
 size = Vector2(128, 126)
@@ -73,11 +76,8 @@ _data = {
 }
 
 [node name="Gem" type="Control"]
-custom_minimum_size = Vector2(128, 128)
 layout_mode = 3
 anchors_preset = 0
-offset_right = 128.0
-offset_bottom = 128.0
 mouse_filter = 1
 script = ExtResource("1_ietch")
 
@@ -132,5 +132,18 @@ animation_player = NodePath("../../AnimationPlayer")
 script = ExtResource("6_kxygo")
 magic_circle = NodePath("../../MagicCircle")
 animation_player = NodePath("../../AnimationPlayer")
+
+[node name="GemTransitioned" type="Node" parent="StateMachine" node_paths=PackedStringArray("gem")]
+script = ExtResource("7_ijhj6")
+gem = NodePath("../..")
+
+[node name="GemReverted" type="Node" parent="StateMachine" node_paths=PackedStringArray("gem")]
+script = ExtResource("8_1xbvn")
+gem = NodePath("../..")
+
+[node name="GemDestroyed" type="Node" parent="StateMachine" node_paths=PackedStringArray("gem", "particles")]
+script = ExtResource("9_pp1lh")
+gem = NodePath("../../Sprite2D")
+particles = NodePath("../../Particle")
 
 [connection signal="input_event" from="Collider" to="." method="_input_event_handle"]

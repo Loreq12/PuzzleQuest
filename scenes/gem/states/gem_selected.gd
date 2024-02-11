@@ -7,3 +7,7 @@ class_name GemSelected
 func Enter():
 	magic_circle.visible = true
 	animation_player.play("selected gem")
+
+func Exit():
+	magic_circle.visible = false
+	animation_player.stop()

@@ -43,12 +43,11 @@ texture = ExtResource("1_37ggg")
 layout_mode = 2
 texture = ExtResource("1_37ggg")
 
-[node name="Gems" type="GridContainer" parent="HBoxContainer"]
+[node name="Gems" type="Container" parent="HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 2
 mouse_force_pass_scroll_events = false
-columns = 8
 script = ExtResource("2_s1mx3")
 
 [node name="EnemyPanel" type="VBoxContainer" parent="HBoxContainer"]

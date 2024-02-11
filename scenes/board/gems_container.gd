@@ -202,3 +202,10 @@ func _handle_gem_selection(gem: Gem):
 					_enable_interaction()
 			else:
 				target.selected = true
+
+func _notification(what):
+	if what == NOTIFICATION_SORT_CHILDREN:
+		print(get_child(0).position)
+		print(get_child(0).size)
+		print(get_child_count())
+		print(get_rect())
