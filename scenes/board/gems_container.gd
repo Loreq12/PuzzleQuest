@@ -35,7 +35,7 @@ func _ready():
 	var random_seed: int = 2642849264
 	print(str("Seed: ", random_seed))
 	seed(random_seed)
-	
+
 	var enemy_panel: VBoxContainer = get_node("../EnemyPanel")
 	var player_panel: VBoxContainer = get_node("../PlayerPanel")
 	var viewport_size = Vector2(get_viewport().size)

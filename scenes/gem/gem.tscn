@@ -1,8 +1,11 @@
-[gd_scene load_steps=8 format=3 uid="uid://3evkn4mghfec"]
+[gd_scene load_steps=11 format=3 uid="uid://3evkn4mghfec"]
 
 [ext_resource type="Script" path="res://scenes/gem/gem.gd" id="1_ietch"]
 [ext_resource type="Texture2D" uid="uid://k7hb6fmilg4g" path="res://scenes/gem/sprites/x2.png" id="2_w8jyn"]
 [ext_resource type="Texture2D" uid="uid://c2yc5hji6r7bt" path="res://magic_circle.png" id="3_4x7dl"]
+[ext_resource type="Script" path="res://scenes/gem/gem_state_machine.gd" id="4_0a22j"]
+[ext_resource type="Script" path="res://scenes/gem/states/gem_selected.gd" id="5_tb1oh"]
+[ext_resource type="Script" path="res://scenes/gem/states/gem_deselected.gd" id="6_kxygo"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_v47b8"]
 size = Vector2(128, 126)
@@ -70,22 +73,28 @@ _data = {
 }
 
 [node name="Gem" type="Control"]
+custom_minimum_size = Vector2(128, 128)
 layout_mode = 3
 anchors_preset = 0
+offset_right = 128.0
+offset_bottom = 128.0
+mouse_filter = 1
 script = ExtResource("1_ietch")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("2_w8jyn")
-
-[node name="MagicCircle" type="Sprite2D" parent="."]
-position = Vector2(2.08165e-12, 2.08165e-12)
-scale = Vector2(0.2, 0.2)
-texture = ExtResource("3_4x7dl")
-
 [node name="Collider" type="Area2D" parent="."]
+position = Vector2(64, 64)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Collider"]
 shape = SubResource("RectangleShape2D_v47b8")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_w8jyn")
+centered = false
+
+[node name="MagicCircle" type="Sprite2D" parent="."]
+position = Vector2(64, 64)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("3_4x7dl")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 root_node = NodePath("../MagicCircle")
@@ -94,7 +103,7 @@ libraries = {
 }
 
 [node name="Particle" type="CPUParticles2D" parent="."]
-position = Vector2(-1, 0)
+position = Vector2(64, 64)
 emitting = false
 amount = 1024
 lifetime = 0.2
@@ -109,5 +118,19 @@ initial_velocity_max = 423.68
 scale_amount_min = 0.0
 scale_amount_max = 3.0
 color = Color(0, 1, 1, 1)
+
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
+script = ExtResource("4_0a22j")
+initial_state = NodePath("GemDeselected")
+
+[node name="GemSelected" type="Node" parent="StateMachine" node_paths=PackedStringArray("magic_circle", "animation_player")]
+script = ExtResource("5_tb1oh")
+magic_circle = NodePath("../../MagicCircle")
+animation_player = NodePath("../../AnimationPlayer")
+
+[node name="GemDeselected" type="Node" parent="StateMachine" node_paths=PackedStringArray("magic_circle", "animation_player")]
+script = ExtResource("6_kxygo")
+magic_circle = NodePath("../../MagicCircle")
+animation_player = NodePath("../../AnimationPlayer")
 
 [connection signal="input_event" from="Collider" to="." method="_input_event_handle"]

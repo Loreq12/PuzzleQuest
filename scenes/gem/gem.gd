@@ -3,9 +3,9 @@ extends Control
 class_name Gem
 
 # SIGNALS
-signal gem_selected(Gem)
-signal gem_finished_transition(Gem)
-signal gem_destroyed(Vector2)
+signal gem_selected(gem: Gem)
+signal gem_finished_transition(gem: Gem)
+signal gem_destroyed(board_position: Vector2)
 
 # DEF
 enum GEM_TYPE_E {RED, BLUE, YELLOW, GREEN}
@@ -36,12 +36,12 @@ func _process(_delta):
 		tween.tween_property(self, "position", target, .4).set_trans(Tween.TRANS_QUART)
 		tween.connect("finished", _transition_after_select_is_finished)
 		position_changed = false
-		selected = false
-	if selected:
-		$AnimationPlayer.play("selected gem")
-	else:
-		$AnimationPlayer.stop()
-	$MagicCircle.visible = selected
+		#selected = false
+	#if selected:
+		#$AnimationPlayer.play("selected gem")
+	#else:
+		#$AnimationPlayer.stop()
+	#$MagicCircle.visible = selected
 
 func _to_string():
 	return str("[GEM: x-> ", board_x, ", y-> ", board_y, ", color-> ", GEM_TYPE_E.BLUE, "]")
@@ -108,8 +108,10 @@ func _input_event_handle(_viewport, event, _shape_idx):
 		#if event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
 			#$Particle.emitting = true
 		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
-			if $AnimationPlayer.is_playing():
-				selected = false
-			else:
-				selected = true
-				emit_signal("gem_selected", self)
+			$StateMachine.toggle()
+			#$StateMachine.current_state.Transition.emit($StateMachine.current_state, "gemselected")
+			#if $AnimationPlayer.is_playing():
+				#selected = false
+			#else:
+				#selected = true
+				#emit_signal("gem_selected", self)
