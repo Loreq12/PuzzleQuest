@@ -205,7 +205,19 @@ func _handle_gem_selection(gem: Gem):
 
 func _notification(what):
 	if what == NOTIFICATION_SORT_CHILDREN:
-		print(get_child(0).position)
-		print(get_child(0).size)
-		print(get_child_count())
-		print(get_rect())
+		var gem: Gem = get_child(0)
+		print(gem.get_rect())
+		var space_needed = (gem.get_rect().size * BOARD_SIZE)
+		var space_left = get_rect().size - space_needed
+		var padding = space_left / 2
+		print(space_needed)
+		print(space_left / BOARD_SIZE)
+		for c in get_children():
+			c.calculate_gem_position_on_scene(padding)
+		#var qwe = [Vector2(10, 10), Vector2(5, 5)]
+		#qwe.sort()
+		#print(qwe)
+		#print(get_child(0).position)
+		#print(get_child(0).size)
+		#print(get_child_count())
+		#print(get_rect())

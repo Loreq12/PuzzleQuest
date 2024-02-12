@@ -22,10 +22,10 @@ var marked_to_be_deleted: bool = false
 var padding: Vector2 = Vector2.ZERO
 
 # Called when the node enters the scene tree for the first time.
-func _ready():
+#func _ready():
 	#if get_viewport().size.y <= 1080:
 		#scale = Vector2(.9, .9)
-	position = _calculate_gem_position_on_scene()
+	#position = _calculate_gem_position_on_scene()
 	#$Particle.connect("finished", _destroy)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -73,13 +73,13 @@ func enable_interation():
 func _get_sprite_size_with_scale():
 	return $Sprite2D.get_rect().size * scale
 	
-func _calculate_gem_position_on_scene():
+func calculate_gem_position_on_scene(padding: Vector2):
 	# Position on board + offset from sprite center + offset from container border
-	var sprite_size: Vector2 = _get_sprite_size_with_scale()
+	var sprite_size: Vector2 = get_rect().size
 	var x = board_x * sprite_size.x
 	var y = board_y * sprite_size.y
 	
-	return Vector2(x, y)
+	position = Vector2(x, y) + padding
 	
 func _destroy():
 	emit_signal("gem_destroyed", Vector2(board_x, board_y))
