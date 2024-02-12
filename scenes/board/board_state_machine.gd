@@ -5,15 +5,15 @@ class_name BoardStateMachine
 
 func _init_transitions():
 	states_allowed_transitions = {
-		"GemDeselected": ["GemSelected"],
-		"GemSelected": ["GemDeselected"],
+		"GemDefault": ["GemSelected"],
+		"GemSelected": ["GemDefault", "GemSelected"],
 		"GemTransitioned": [],
 		"GemReverted": [],
 		"GemDestroyed": []
 	}
 
-func change_state_to_gem_selected():
+func change_to_gem_selected_state():
 	current_state.Transition.emit(current_state, "GemSelected")
 
-func change_state_to_gem_deselected():
-	current_state.Transition.emit(current_state, "GemDeselected")
+func change_to_default_state():
+	current_state.Transition.emit(current_state, "GemDefault")

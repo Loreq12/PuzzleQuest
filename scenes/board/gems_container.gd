@@ -100,6 +100,8 @@ func get_neighbors_gem(gem: Gem, direction: GEM_DIRECTION) -> Array:
 		
 func add_neighbors_to_group(gem: Gem):
 	var neighbors = get_neighbors_gem(gem, GEM_DIRECTION.ALL)
+	#for g in get_tree().get_nodes_in_group("gem_neighbors"):
+		#g.remove_from_group("gem_neighbors")
 	for g in neighbors:
 		g.add_to_group("gem_neighbors")
 		
@@ -155,16 +157,23 @@ func check_for_matches():
 func _handle_gem_selected(gem: Gem):
 	if gem.is_in_group("gem_selected"):
 		# Twice clicked on same gem
-		state_machine.change_state_to_gem_deselected()
+		state_machine.change_to_default_state()
 	else:
-		var how_many_selected = get_tree().get_nodes_in_group("gem_selected").size()
-		if how_many_selected == 0:
+		var gems_selected = get_tree().get_nodes_in_group("gem_selected")
+		if gems_selected.size() == 0:
+			# Default state. No gems selected
 			gem.add_to_group("gem_selected")
 			add_neighbors_to_group(gem)
-			state_machine.change_state_to_gem_selected()
-	#var gem: Gem = get_tree().get_first_node_in_group("gem_selected")
-	#add_neighbors_to_group(gem)
-	#state_machine.change_state_to_gem_selected()
+			state_machine.change_to_gem_selected_state()
+		elif gems_selected.size() == 1:
+			# There is already one gem selected
+			if gem.is_in_group("gem_neighbors"):
+				# You clicked on neighbour
+				print("MOVING GEMS")
+			state_machine.change_to_default_state()
+			gem.add_to_group("gem_selected")
+			add_neighbors_to_group(gem)
+			state_machine.change_to_gem_selected_state()
 #func _handle_gem_destroyed(v: Vector2):
 	#if not destroyed.is_empty():
 		#destroyed.erase(v)

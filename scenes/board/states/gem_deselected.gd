@@ -1,5 +1,5 @@
 extends State
-class_name GemDeselected
+class_name GemDefault
 
 # for now nothing is required as this is base state
 func Enter():

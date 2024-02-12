@@ -62,10 +62,10 @@ stretch_mode = 3
 
 [node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
 script = ExtResource("3_sdqco")
-initial_state = NodePath("GemDeselected")
+initial_state = NodePath("GemDefault")
 
 [node name="GemSelected" type="Node" parent="StateMachine"]
 script = ExtResource("4_22hrv")
 
-[node name="GemDeselected" type="Node" parent="StateMachine"]
+[node name="GemDefault" type="Node" parent="StateMachine"]
 script = ExtResource("4_y6aup")
