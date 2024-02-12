@@ -3,7 +3,7 @@ extends Control
 class_name Gem
 
 # SIGNALS
-signal gem_selected(gem: Gem)
+signal s_gem_selected(gem: Gem)
 signal gem_finished_transition(gem: Gem)
 signal gem_destroyed(board_position: Vector2)
 
@@ -14,7 +14,10 @@ enum GEM_TYPE_E {RED, BLUE, YELLOW, GREEN}
 @export var gem_type : GEM_TYPE_E
 @export var board_x: int
 @export var board_y: int
-@export var selected: bool
+##########################
+@export var animation_player: AnimationPlayer
+@export var gem_sprite: Sprite2D
+@export var selection_sprite: Sprite2D
 
 # GLOBALS
 var position_changed: bool = false
@@ -52,12 +55,12 @@ func setup_gem_color():
 	gem_type = GEM_TYPE_E.values()[randi() % GEM_TYPE_E.size()]
 	_adjust_gem_color()
 
-func setup_gem_position_on_board(v: Vector2i, container_padding: Vector2, init: bool = false):
+func setup_gem_position_on_board(v: Vector2i):#, container_padding: Vector2, init: bool = false):
 	board_x = v.x
 	board_y = v.y
-	padding = container_padding
-	if not init:
-		position_changed = true
+	#padding = container_padding
+	#if not init:
+		#position_changed = true
 
 func destroy():
 	$Sprite2D.visible = false
@@ -119,7 +122,9 @@ func _input_event_handle(_viewport, event, _shape_idx):
 		#if event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
 			#$Particle.emitting = true
 		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
-			$StateMachine.toggle()
+			#add_to_group("gem_selected")
+			emit_signal("s_gem_selected", self)
+			#$StateMachine.toggle()
 			#$StateMachine.current_state.Transition.emit($StateMachine.current_state, "gemselected")
 			#if $AnimationPlayer.is_playing():
 				#selected = false

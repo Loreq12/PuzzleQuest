@@ -1,5 +1,5 @@
 extends State
-class_name GemDestroyed
+class_name GemDestroyed2
 
 @export var gem: Sprite2D
 @export var particles: CPUParticles2D

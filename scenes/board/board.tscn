@@ -1,7 +1,10 @@
-[gd_scene load_steps=3 format=3 uid="uid://be442fhi42gni"]
+[gd_scene load_steps=6 format=3 uid="uid://be442fhi42gni"]
 
 [ext_resource type="Texture2D" uid="uid://k7hb6fmilg4g" path="res://scenes/gem/sprites/x2.png" id="1_37ggg"]
 [ext_resource type="Script" path="res://scenes/board/gems_container.gd" id="2_s1mx3"]
+[ext_resource type="Script" path="res://scenes/board/board_state_machine.gd" id="3_sdqco"]
+[ext_resource type="Script" path="res://scenes/board/states/gem_selected.gd" id="4_22hrv"]
+[ext_resource type="Script" path="res://scenes/board/states/gem_deselected.gd" id="4_y6aup"]
 
 [node name="Board" type="Control"]
 layout_mode = 3
@@ -56,3 +59,13 @@ size_flags_stretch_ratio = 0.0
 layout_mode = 2
 texture = ExtResource("1_37ggg")
 stretch_mode = 3
+
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
+script = ExtResource("3_sdqco")
+initial_state = NodePath("GemDeselected")
+
+[node name="GemSelected" type="Node" parent="StateMachine"]
+script = ExtResource("4_22hrv")
+
+[node name="GemDeselected" type="Node" parent="StateMachine"]
+script = ExtResource("4_y6aup")

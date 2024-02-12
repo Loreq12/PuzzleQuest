@@ -1,5 +1,5 @@
 extends State
-class_name GemTransitioned
+class_name GemTransitioned2
 
 @export var gem: Gem
 @export var target_transition: Vector2

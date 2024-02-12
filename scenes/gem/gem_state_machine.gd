@@ -1,4 +1,5 @@
 extends StateMachine
+
 class_name GemStateMachine
 
 

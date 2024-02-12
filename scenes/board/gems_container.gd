@@ -2,21 +2,29 @@ extends Container
 
 class_name GemContainer
 
-enum GEM_DIRECTION {LEFT, RIGHT, TOP, BOTTOM}
+enum GEM_DIRECTION {
+	LEFT = 1,
+	RIGHT = 2,
+	TOP = 4,
+	BOTTOM = 8,
+	ALL = LEFT | RIGHT | TOP | BOTTOM
+}
 
 var BOARD_SIZE = 8
 
 var revert_gems = []
 var destroyed = {}
-var container_padding: Vector2 = Vector2.ZERO
+
+@onready var state_machine: BoardStateMachine = $"../../StateMachine"
 
 func _prepare_gem(v: Vector2):
 	var gem = preload("res://scenes/gem/gem.tscn").instantiate()
 	gem.setup_gem_color()
-	gem.setup_gem_position_on_board(v, container_padding, true)
-	gem.connect("gem_finished_transition", _handle_gem_transition_finished)
-	gem.connect("gem_selected", _handle_gem_selection)
-	gem.connect("gem_destroyed", _handle_gem_destroyed)
+	gem.setup_gem_position_on_board(v)
+	gem.add_to_group("interaction")
+	gem.connect("s_gem_selected", _handle_gem_selected)
+	#gem.connect("gem_finished_transition", _handle_gem_transition_finished)
+	#gem.connect("gem_destroyed", _handle_gem_destroyed)
 	
 	return gem
 
@@ -64,31 +72,36 @@ func _ready():
 			
 			add_child(gem)
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(_delta):
-	pass
-
 func generate_gem_to_fill_board(v: Vector2i):
 	var gem: Gem = _prepare_gem(Vector2i(v.x, -1))
 	add_child(gem)
-	gem.setup_gem_position_on_board(v, container_padding)
+	gem.setup_gem_position_on_board(v)
 
 func get_neighbor_gem(gem: Gem, direction: GEM_DIRECTION):
-	var target: Array
+	var neighbor = get_neighbors_gem(gem, direction)
+	if neighbor:
+		return neighbor[0]
+	return null
+
+func get_neighbors_gem(gem: Gem, direction: GEM_DIRECTION) -> Array:
+	var target: Array = []
+	var all_children = get_children()
 	
-	if direction == GEM_DIRECTION.LEFT:
-		target = get_children().filter(func(g): return g.board_x == gem.board_x - 1 and g.board_y == gem.board_y)
-	elif direction == GEM_DIRECTION.RIGHT:
-		target = get_children().filter(func(g): return g.board_x == gem.board_x + 1 and g.board_y == gem.board_y)
-	elif direction == GEM_DIRECTION.TOP:
-		target = get_children().filter(func(g): return g.board_y == gem.board_y - 1 and g.board_x == gem.board_x)
-	elif direction == GEM_DIRECTION.BOTTOM:
-		target = get_children().filter(func(g): return g.board_y == gem.board_y + 1 and g.board_x == gem.board_x)
+	if direction & GEM_DIRECTION.LEFT:
+		target += all_children.filter(func(g): return g.board_x == gem.board_x - 1 and g.board_y == gem.board_y)
+	if direction & GEM_DIRECTION.RIGHT:
+		target += all_children.filter(func(g): return g.board_x == gem.board_x + 1 and g.board_y == gem.board_y)
+	if direction & GEM_DIRECTION.TOP:
+		target += all_children.filter(func(g): return g.board_y == gem.board_y - 1 and g.board_x == gem.board_x)
+	if direction & GEM_DIRECTION.BOTTOM:
+		target += all_children.filter(func(g): return g.board_y == gem.board_y + 1 and g.board_x == gem.board_x)
 		
-	if target:
-		return target[0]
-	else:
-		return null
+	return target
+		
+func add_neighbors_to_group(gem: Gem):
+	var neighbors = get_neighbors_gem(gem, GEM_DIRECTION.ALL)
+	for g in neighbors:
+		g.add_to_group("gem_neighbors")
 		
 func get_gem_on_position(x: int, y: int):
 	return get_children().filter(func(g): return g.board_x == x and g.board_y == y)[0]
@@ -99,14 +112,14 @@ func gems_are_neighbors(gem_1: Gem, gem_2: Gem):
 func swap_gems_position(gem_1: Gem, gem_2: Gem):
 	var source: Vector2 = Vector2(gem_1.board_x, gem_1.board_y)
 	var target: Vector2 = Vector2(gem_2.board_x, gem_2.board_y)
-	gem_1.setup_gem_position_on_board(target, container_padding)
-	gem_2.setup_gem_position_on_board(source, container_padding)
+	gem_1.setup_gem_position_on_board(target)
+	gem_2.setup_gem_position_on_board(source)
 
-func is_board_filled():
-	var children = get_children()
-	var cond1 = children.filter(func(g): return g.marked_to_be_deleted).is_empty()
-	var cond2 = len(children) == BOARD_SIZE ** 2
-	return cond1 and cond2
+#func is_board_filled():
+	#var children = get_children()
+	#var cond1 = children.filter(func(g): return g.marked_to_be_deleted).is_empty()
+	#var cond2 = len(children) == BOARD_SIZE ** 2
+	#return cond1 and cond2
 
 func check_for_matches():
 	var gem1: Gem
@@ -139,85 +152,93 @@ func check_for_matches():
 	return to_be_destroyed.values()
 
 # EVENTS
-func _handle_gem_destroyed(v: Vector2):
-	if not destroyed.is_empty():
-		destroyed.erase(v)
-		if destroyed.is_empty():
-			# All gems have finished transition/destruction
-			var gem_count_in_column = []
-			for column in range(BOARD_SIZE):
-				var gems_in_column = get_children().filter(func(g): return g.board_x == column and not g.marked_to_be_deleted)
-				gems_in_column.sort_custom(func(a, b): return a.board_y > b.board_y)
-				gem_count_in_column.append(gems_in_column.size())
-				if len(gems_in_column) == BOARD_SIZE:
-					continue
-				for gem_idx in range(gems_in_column.size()):
-					if gems_in_column.size() - 1 == gem_idx:
-						break
-					var current_gem: Gem = gems_in_column[gem_idx]
-					if gem_idx == 0 and current_gem.board_y != BOARD_SIZE - 1:
-						current_gem.setup_gem_position_on_board(Vector2(current_gem.board_x, BOARD_SIZE - 1), container_padding)
-					var next_gem: Gem = gems_in_column[gem_idx + 1]
-					if current_gem.board_y - next_gem.board_y > 1:
-						next_gem.setup_gem_position_on_board(Vector2(current_gem.board_x, current_gem.board_y - 1), container_padding)
-			for idx in range(gem_count_in_column.size()):
-				if gem_count_in_column[idx] == BOARD_SIZE:
-					continue
-				for i in range(BOARD_SIZE - gem_count_in_column[idx] - 1, -1, -1):
-					generate_gem_to_fill_board(Vector2(idx, i))
-
-func _handle_gem_transition_finished(_gem: Gem):
-	if revert_gems:
-		swap_gems_position(revert_gems[0], revert_gems[1])
-		revert_gems = []
+func _handle_gem_selected(gem: Gem):
+	if gem.is_in_group("gem_selected"):
+		# Twice clicked on same gem
+		state_machine.change_state_to_gem_deselected()
 	else:
-		# This "else" is triggered each time gem transitions.
-		# Should be only one when all have finished
-		if not is_board_filled():
-			return
-		var matches = check_for_matches()
-		if matches.is_empty():
-			print("no matches")
-			_enable_interaction()
-			return
-		for gem_to_destroy in matches:
-			destroyed[Vector2(gem_to_destroy.board_x, gem_to_destroy.board_y)] = gem_to_destroy
-			gem_to_destroy.destroy()
-		
-func _handle_gem_selection(gem: Gem):
-	var result = get_children().filter(func(g): return g.selected)
-	# Stont bugi wyszli!
-	if len(result) > 1:
-		_disable_interaction()
-		for target in result:
-			if target != gem:
-				if gems_are_neighbors(gem, target):
-					swap_gems_position(gem, target)
-					var gems_to_destroy = check_for_matches()
-					if not gems_to_destroy:
-						revert_gems.append(gem)
-						revert_gems.append(target)
-				else:
-					target.selected = false
-					_enable_interaction()
-			else:
-				target.selected = true
+		var how_many_selected = get_tree().get_nodes_in_group("gem_selected").size()
+		if how_many_selected == 0:
+			gem.add_to_group("gem_selected")
+			add_neighbors_to_group(gem)
+			state_machine.change_state_to_gem_selected()
+	#var gem: Gem = get_tree().get_first_node_in_group("gem_selected")
+	#add_neighbors_to_group(gem)
+	#state_machine.change_state_to_gem_selected()
+#func _handle_gem_destroyed(v: Vector2):
+	#if not destroyed.is_empty():
+		#destroyed.erase(v)
+		#if destroyed.is_empty():
+			## All gems have finished transition/destruction
+			#var gem_count_in_column = []
+			#for column in range(BOARD_SIZE):
+				#var gems_in_column = get_children().filter(func(g): return g.board_x == column and not g.marked_to_be_deleted)
+				#gems_in_column.sort_custom(func(a, b): return a.board_y > b.board_y)
+				#gem_count_in_column.append(gems_in_column.size())
+				#if len(gems_in_column) == BOARD_SIZE:
+					#continue
+				#for gem_idx in range(gems_in_column.size()):
+					#if gems_in_column.size() - 1 == gem_idx:
+						#break
+					#var current_gem: Gem = gems_in_column[gem_idx]
+					#if gem_idx == 0 and current_gem.board_y != BOARD_SIZE - 1:
+						#current_gem.setup_gem_position_on_board(Vector2(current_gem.board_x, BOARD_SIZE - 1), container_padding)
+					#var next_gem: Gem = gems_in_column[gem_idx + 1]
+					#if current_gem.board_y - next_gem.board_y > 1:
+						#next_gem.setup_gem_position_on_board(Vector2(current_gem.board_x, current_gem.board_y - 1), container_padding)
+			#for idx in range(gem_count_in_column.size()):
+				#if gem_count_in_column[idx] == BOARD_SIZE:
+					#continue
+				#for i in range(BOARD_SIZE - gem_count_in_column[idx] - 1, -1, -1):
+					#generate_gem_to_fill_board(Vector2(idx, i))
+#
+#func _handle_gem_transition_finished(_gem: Gem):
+	#if revert_gems:
+		#swap_gems_position(revert_gems[0], revert_gems[1])
+		#revert_gems = []
+	#else:
+		## This "else" is triggered each time gem transitions.
+		## Should be only one when all have finished
+		#if not is_board_filled():
+			#return
+		#var matches = check_for_matches()
+		#if matches.is_empty():
+			#print("no matches")
+			#_enable_interaction()
+			#return
+		#for gem_to_destroy in matches:
+			#destroyed[Vector2(gem_to_destroy.board_x, gem_to_destroy.board_y)] = gem_to_destroy
+			#gem_to_destroy.destroy()
+		#
+#func _handle_gem_selection(gem: Gem):
+	#var result = get_children().filter(func(g): return g.selected)
+	## Stont bugi wyszli!
+	#if len(result) > 1:
+		#_disable_interaction()
+		#for target in result:
+			#if target != gem:
+				#if gems_are_neighbors(gem, target):
+					#swap_gems_position(gem, target)
+					#var gems_to_destroy = check_for_matches()
+					#if not gems_to_destroy:
+						#revert_gems.append(gem)
+						#revert_gems.append(target)
+				#else:
+					#target.selected = false
+					#_enable_interaction()
+			#else:
+				#target.selected = true
+
+#func _unhandled_input(event):
+	#if event is InputEventKey:
+		#if event.pressed and event.keycode == KEY_Q:
+			#print(get_tree().get_nodes_in_group("interaction"))
 
 func _notification(what):
 	if what == NOTIFICATION_SORT_CHILDREN:
 		var gem: Gem = get_child(0)
-		print(gem.get_rect())
 		var space_needed = (gem.get_rect().size * BOARD_SIZE)
 		var space_left = get_rect().size - space_needed
 		var padding = space_left / 2
-		print(space_needed)
-		print(space_left / BOARD_SIZE)
 		for c in get_children():
 			c.calculate_gem_position_on_scene(padding)
-		#var qwe = [Vector2(10, 10), Vector2(5, 5)]
-		#qwe.sort()
-		#print(qwe)
-		#print(get_child(0).position)
-		#print(get_child(0).size)
-		#print(get_child_count())
-		#print(get_rect())

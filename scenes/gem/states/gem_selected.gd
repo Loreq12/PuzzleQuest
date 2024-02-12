@@ -1,5 +1,5 @@
 extends State
-class_name GemSelected
+class_name GemSelected2
 
 @export var magic_circle: Sprite2D
 @export var animation_player: AnimationPlayer
