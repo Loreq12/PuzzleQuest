@@ -1,10 +1,13 @@
-[gd_scene load_steps=6 format=3 uid="uid://be442fhi42gni"]
+[gd_scene load_steps=9 format=3 uid="uid://be442fhi42gni"]
 
 [ext_resource type="Texture2D" uid="uid://k7hb6fmilg4g" path="res://scenes/gem/sprites/x2.png" id="1_37ggg"]
 [ext_resource type="Script" path="res://scenes/board/gems_container.gd" id="2_s1mx3"]
 [ext_resource type="Script" path="res://scenes/board/board_state_machine.gd" id="3_sdqco"]
 [ext_resource type="Script" path="res://scenes/board/states/gem_selected.gd" id="4_22hrv"]
 [ext_resource type="Script" path="res://scenes/board/states/gem_deselected.gd" id="4_y6aup"]
+[ext_resource type="Script" path="res://scenes/board/states/gem_transitioned.gd" id="6_55kn6"]
+[ext_resource type="Script" path="res://scenes/board/states/gem_destroyed.gd" id="7_k1bxe"]
+[ext_resource type="Script" path="res://scenes/board/states/gem_reverted.gd" id="7_q5bxc"]
 
 [node name="Board" type="Control"]
 layout_mode = 3
@@ -69,3 +72,14 @@ script = ExtResource("4_22hrv")
 
 [node name="GemDefault" type="Node" parent="StateMachine"]
 script = ExtResource("4_y6aup")
+
+[node name="GemTransitioned" type="Node" parent="StateMachine" node_paths=PackedStringArray("board")]
+script = ExtResource("6_55kn6")
+board = NodePath("../../HBoxContainer/Gems")
+
+[node name="GemReverted" type="Node" parent="StateMachine" node_paths=PackedStringArray("board")]
+script = ExtResource("7_q5bxc")
+board = NodePath("../../HBoxContainer/Gems")
+
+[node name="GemDestroyed" type="Node" parent="StateMachine"]
+script = ExtResource("7_k1bxe")

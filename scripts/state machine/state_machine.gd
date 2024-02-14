@@ -66,8 +66,10 @@ func on_state_transition(state: State, new_state_name: String):
 	assert(new_state_name.to_lower() in allowed_transitions_list, "ERROR: Unsupported state transition. %s attempts to transition to %s but only %s is allowed" % [state, new_state, allowed_transitions_list])
 	
 	if current_state:
+		print("Execute exit event for \'%s\' state" % current_state.name)
 		current_state.Exit()
 		
+	print("Execute enter event for \'%s\' state" % new_state.name)
 	new_state.Enter()
 	
 	current_state = new_state

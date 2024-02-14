@@ -12,8 +12,8 @@ enum GEM_DIRECTION {
 
 var BOARD_SIZE = 8
 
-var revert_gems = []
-var destroyed = {}
+#var revert_gems = []
+#var destroyed = {}
 
 @onready var state_machine: BoardStateMachine = $"../../StateMachine"
 
@@ -28,13 +28,13 @@ func _prepare_gem(v: Vector2):
 	
 	return gem
 
-func _disable_interaction():
-	for gem in get_children():
-		gem.disable_interation()
-
-func _enable_interaction():
-	for gem in get_children():
-		gem.enable_interation()
+#func _disable_interaction():
+	#for gem in get_children():
+		#gem.disable_interation()
+#
+#func _enable_interaction():
+	#for gem in get_children():
+		#gem.enable_interation()
 	
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -128,16 +128,17 @@ func check_for_matches():
 	var gem2: Gem
 	var gem3: Gem
 	var _destroy: Gem
-	var to_be_destroyed: Dictionary = {}
+	var to_be_destroyed: bool
 	for y in range(BOARD_SIZE):
 		for x in range(BOARD_SIZE - 2):
 			gem1 = get_gem_on_position(x, y)
 			gem2 = get_gem_on_position(x + 1, y)
 			gem3 = get_gem_on_position(x + 2, y)
 			if gem1.gem_type == gem2.gem_type and gem2.gem_type == gem3.gem_type:
+				to_be_destroyed = true
 				for i in range(3):
 					_destroy = get_gem_on_position(x + i, y)
-					to_be_destroyed[str(_destroy)] = _destroy
+					_destroy.add_to_group("gem_destroy")
 
 	for y in range(BOARD_SIZE - 2):
 		for x in range(BOARD_SIZE):
@@ -145,13 +146,21 @@ func check_for_matches():
 			gem2 = get_gem_on_position(x, y + 1)
 			gem3 = get_gem_on_position(x, y + 2)
 			if gem1.gem_type == gem2.gem_type and gem2.gem_type == gem3.gem_type:
+				to_be_destroyed = true
 				for i in range(3):
 					_destroy = get_gem_on_position(x, y + i)
-					to_be_destroyed[str(_destroy)] = _destroy
+					_destroy.add_to_group("gem_destroy")
 	
+	if to_be_destroyed:
+		state_machine.change_to_gem_destroy_state()
+		state_machine.change_to_default_state()
+	else:
+		state_machine.change_to_gem_revert_state()
+		state_machine.change_to_default_state()
 	#if to_be_destroyed.is_empty():
 		#print("nothing to destroy")
-	return to_be_destroyed.values()
+	#print(to_be_destroyed)
+	#return to_be_destroyed.values()
 
 # EVENTS
 func _handle_gem_selected(gem: Gem):
@@ -168,12 +177,15 @@ func _handle_gem_selected(gem: Gem):
 		elif gems_selected.size() == 1:
 			# There is already one gem selected
 			if gem.is_in_group("gem_neighbors"):
+				gem.add_to_group("gem_selected")
 				# You clicked on neighbour
-				print("MOVING GEMS")
-			state_machine.change_to_default_state()
-			gem.add_to_group("gem_selected")
-			add_neighbors_to_group(gem)
-			state_machine.change_to_gem_selected_state()
+				state_machine.change_to_gem_transition_state()
+			else:
+				# You clicked ouside of neighbourhood
+				state_machine.change_to_default_state()
+				gem.add_to_group("gem_selected")
+				add_neighbors_to_group(gem)
+				state_machine.change_to_gem_selected_state()
 #func _handle_gem_destroyed(v: Vector2):
 	#if not destroyed.is_empty():
 		#destroyed.erase(v)

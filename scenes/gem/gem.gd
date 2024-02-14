@@ -12,17 +12,24 @@ enum GEM_TYPE_E {RED, BLUE, YELLOW, GREEN}
 
 # EXPORTS
 @export var gem_type : GEM_TYPE_E
-@export var board_x: int
-@export var board_y: int
+@export var board_position: Vector2i:
+	get:
+		return Vector2i(board_x, board_y)
+	set(value):
+		board_x = value.x
+		board_y = value.y
 ##########################
 @export var animation_player: AnimationPlayer
 @export var gem_sprite: Sprite2D
 @export var selection_sprite: Sprite2D
+@export var particles: CPUParticles2D
 
 # GLOBALS
+var board_x: int
+var board_y: int
 var position_changed: bool = false
-var marked_to_be_deleted: bool = false
-var padding: Vector2 = Vector2.ZERO
+#var marked_to_be_deleted: bool = false
+#var padding: Vector2 = Vector2.ZERO
 
 # Called when the node enters the scene tree for the first time.
 #func _ready():
@@ -65,7 +72,8 @@ func setup_gem_position_on_board(v: Vector2i):#, container_padding: Vector2, ini
 func destroy():
 	$Sprite2D.visible = false
 	$Particle.emitting = true
-	marked_to_be_deleted = true
+	$Particle.connect("finished", queue_free)
+	#marked_to_be_deleted = true
 	
 func disable_interation():
 	$Collider.set_pickable(false)
@@ -84,9 +92,9 @@ func calculate_gem_position_on_scene(padding: Vector2):
 	
 	position = Vector2(x, y) + padding
 	
-func _destroy():
-	emit_signal("gem_destroyed", Vector2(board_x, board_y))
-	queue_free()
+#func _destroy():
+	#emit_signal("gem_destroyed", Vector2(board_x, board_y))
+	#queue_free()
 
 func _adjust_gem_color():
 	if gem_type == GEM_TYPE_E.RED:
@@ -103,19 +111,19 @@ func _adjust_gem_color():
 		$Particle.color = Color(1, 1, 0)
 
 # EVENTS
-func _transition_after_select_is_finished():
-	emit_signal("gem_finished_transition", self)
+#func _transition_after_select_is_finished():
+	#emit_signal("gem_finished_transition", self)
 
-func _unhandled_input(event):
+#func _unhandled_input(event):
 	#used for total size of gem
 	#print(get_combined_minimum_size())
-	if event is InputEventKey:
-		if event.pressed and event.keycode == KEY_T:
-			$StateMachine.transition(self.position, Vector2(300, 800))
-		elif event.pressed and event.keycode == KEY_R:
-			$StateMachine.revert()
-		elif event.pressed and event.keycode == KEY_D:
-			$StateMachine.destroy()
+	#if event is InputEventKey:
+		#if event.pressed and event.keycode == KEY_T:
+			#$StateMachine.transition(self.position, Vector2(300, 800))
+		#elif event.pressed and event.keycode == KEY_R:
+			#$StateMachine.revert()
+		#elif event.pressed and event.keycode == KEY_D:
+			#$StateMachine.destroy()
 
 func _input_event_handle(_viewport, event, _shape_idx):
 	if event is InputEventMouseButton:

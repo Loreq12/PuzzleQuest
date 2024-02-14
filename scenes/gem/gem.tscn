@@ -69,7 +69,7 @@ _data = {
 "selected gem": SubResource("Animation_e0fhl")
 }
 
-[node name="Gem" type="Control" node_paths=PackedStringArray("animation_player", "gem_sprite", "selection_sprite")]
+[node name="Gem" type="Control" node_paths=PackedStringArray("animation_player", "gem_sprite", "selection_sprite", "particles")]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 128.0
@@ -79,6 +79,7 @@ script = ExtResource("1_ietch")
 animation_player = NodePath("AnimationPlayer")
 gem_sprite = NodePath("Sprite2D")
 selection_sprite = NodePath("MagicCircle")
+particles = NodePath("Particle")
 
 [node name="Collider" type="Area2D" parent="."]
 position = Vector2(64, 64)
@@ -106,7 +107,7 @@ libraries = {
 position = Vector2(64, 64)
 emitting = false
 amount = 1024
-lifetime = 0.2
+lifetime = 5.0
 one_shot = true
 fixed_fps = 60
 particle_flag_align_y = true
