@@ -28,7 +28,7 @@ enum GEM_TYPE_E {RED, BLUE, YELLOW, GREEN}
 var board_x: int
 var board_y: int
 var position_changed: bool = false
-#var marked_to_be_deleted: bool = false
+var marked_to_be_deleted: bool = false
 #var padding: Vector2 = Vector2.ZERO
 
 # Called when the node enters the scene tree for the first time.
@@ -54,7 +54,7 @@ var position_changed: bool = false
 	#$MagicCircle.visible = selected
 
 func _to_string():
-	return str("[GEM: x-> ", board_x, ", y-> ", board_y, ", color-> ", GEM_TYPE_E.BLUE, "]")
+	return str("[GEM: x->", board_x, ", y->", board_y, ", color->", GEM_TYPE_E.keys()[gem_type], "]")
 
 #######
 
@@ -70,28 +70,33 @@ func setup_gem_position_on_board(v: Vector2i):#, container_padding: Vector2, ini
 		#position_changed = true
 
 func destroy():
+	marked_to_be_deleted = true
 	$Sprite2D.visible = false
 	$Particle.emitting = true
 	$Particle.connect("finished", queue_free)
-	#marked_to_be_deleted = true
-	
+
+#func drop_to_desired_position(v: Vector2i):
+	#setup_gem_position_on_board(v)
+
 func disable_interation():
 	$Collider.set_pickable(false)
 
 func enable_interation():
 	$Collider.set_pickable(true)
 
-func _get_sprite_size_with_scale():
-	return $Sprite2D.get_rect().size * scale
+#func _get_sprite_size_with_scale():
+	#return $Sprite2D.get_rect().size * scale
 	
-func calculate_gem_position_on_scene(padding: Vector2):
+func calculate_gem_position_on_scene(padding: Vector2) -> Vector2:
 	# Position on board + offset from sprite center + offset from container border
 	var sprite_size: Vector2 = get_rect().size
 	var x = board_x * sprite_size.x
-	var y = board_y * sprite_size.y
+	var y = -200
+	if board_y >= 0:
+		y = board_y * sprite_size.y
 	
-	position = Vector2(x, y) + padding
-	
+	return Vector2(x, y) + padding
+
 #func _destroy():
 	#emit_signal("gem_destroyed", Vector2(board_x, board_y))
 	#queue_free()

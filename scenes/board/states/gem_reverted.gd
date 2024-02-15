@@ -24,6 +24,6 @@ func Enter():
 	var tween := create_tween()
 	tween.set_parallel(true)
 	tween.set_trans(Tween.TRANS_QUART)
-	tween.tween_property(gem_1, "position", gem_2.position, 4)
-	tween.tween_property(gem_2, "position", gem_1.position, 4)
+	tween.tween_property(gem_1, "position", gem_2.position, .4)
+	tween.tween_property(gem_2, "position", gem_1.position, .4)
 	tween.connect("finished", _enable_interaction)
