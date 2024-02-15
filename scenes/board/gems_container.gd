@@ -153,10 +153,9 @@ func check_for_matches():
 	
 	if to_be_destroyed:
 		state_machine.change_to_gem_destroy_state()
-		state_machine.change_to_default_state()
 	else:
 		state_machine.change_to_gem_revert_state()
-		state_machine.change_to_default_state()
+	state_machine.change_to_default_state()
 	#if to_be_destroyed.is_empty():
 		#print("nothing to destroy")
 	#print(to_be_destroyed)
