@@ -2,7 +2,6 @@ extends State
 class_name GemDefault
 
 func Enter():
-	#get_tree().call_group("interaction", "enable_interation")
 	var gems: Array = get_tree().get_nodes_in_group("gem_selected")
 	for gem in gems:
 		gem.selection_sprite.visible = false
