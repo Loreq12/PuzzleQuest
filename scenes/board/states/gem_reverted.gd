@@ -3,9 +3,6 @@ class_name GemReverted
 
 @export var board: GemContainer
 
-func _enable_interaction():
-	get_tree().call_group("interaction", "enable_interation")
-
 func Enter():
 	var gems: Array = get_tree().get_nodes_in_group("gem_selected")
 	assert(gems.size() == 2, "ERROR: Revert can occur only between 2 gems")
@@ -24,6 +21,7 @@ func Enter():
 	var tween := create_tween()
 	tween.set_parallel(true)
 	tween.set_trans(Tween.TRANS_QUART)
-	tween.tween_property(gem_1, "position", gem_2.position, .4)
-	tween.tween_property(gem_2, "position", gem_1.position, .4)
-	tween.connect("finished", _enable_interaction)
+	tween.tween_property(gem_1, "position", gem_2.position, .5)
+	tween.tween_property(gem_2, "position", gem_1.position, .5)
+	await tween.finished
+	get_tree().call_group("interaction", "enable_interation")

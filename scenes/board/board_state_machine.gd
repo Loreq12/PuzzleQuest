@@ -10,23 +10,23 @@ func _init_transitions():
 		"GemTransitioned": ["GemDestroyed", "GemReverted"],
 		"GemReverted": ["GemDefault"],
 		"GemDestroyed": ["BoardFilling"],
-		"BoardFilling": ["GemDefault"],
+		"BoardFilling": ["GemDestroyed", "GemDefault"],
 	}
 
 func change_to_gem_selected_state():
-	current_state.Transition.emit(current_state, "GemSelected")
+	transition_to("GemSelected")
 
 func change_to_default_state():
-	current_state.Transition.emit(current_state, "GemDefault")
+	transition_to("GemDefault")
 
 func change_to_gem_transition_state():
-	current_state.Transition.emit(current_state, "GemTransitioned")
+	await transition_to("GemTransitioned")
 
 func change_to_gem_destroy_state():
-	current_state.Transition.emit(current_state, "GemDestroyed")
+	await transition_to("GemDestroyed")
 	
 func change_to_gem_revert_state():
-	current_state.Transition.emit(current_state, "GemReverted")
+	await transition_to("GemReverted")
 
 func change_to_board_filling_state():
-	current_state.Transition.emit(current_state, "BoardFilling")
+	await transition_to("BoardFilling")

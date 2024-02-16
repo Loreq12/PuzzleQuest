@@ -43,7 +43,7 @@ func destroy():
 	marked_to_be_deleted = true
 	$Sprite2D.visible = false
 	$Particle.emitting = true
-	$Particle.connect("finished", queue_free)
+	#$Particle.connect("finished", queue_free)
 
 func disable_interation():
 	$Collider.set_pickable(false)

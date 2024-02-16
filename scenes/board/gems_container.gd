@@ -84,7 +84,7 @@ func add_neighbors_to_group(gem: Gem):
 func get_gem_on_position(x: int, y: int):
 	return get_children().filter(func(g): return g.board_x == x and g.board_y == y)[0]
 
-func finish_filling():
+func cleanup_filling():
 	for g in get_tree().get_nodes_in_group("board_filling"):
 		g.remove_from_group("board_filling")
 
@@ -108,13 +108,13 @@ func fill_board_after_gems_destroyed():
 				current_gem.add_to_group("board_filling")
 				current_gem.board_position = Vector2i(current_gem.board_x, BOARD_SIZE - 1)
 				var new_position = current_gem.calculate_gem_position_on_scene(padding)
-				tween.tween_property(current_gem, "position", new_position, 5)
+				tween.tween_property(current_gem, "position", new_position, .5)
 			var next_gem: Gem = gems_in_column[gem_idx + 1]
 			if current_gem.board_y - next_gem.board_y > 1:
 				next_gem.add_to_group("board_filling")
 				next_gem.board_position = Vector2i(current_gem.board_x, current_gem.board_y - 1)
 				var new_position = next_gem.calculate_gem_position_on_scene(padding)
-				tween.tween_property(next_gem, "position", new_position, 5)
+				tween.tween_property(next_gem, "position", new_position, .5)
 	
 	for idx in range(gem_count_in_column.size()):
 		if gem_count_in_column[idx] == BOARD_SIZE:
@@ -126,23 +126,22 @@ func fill_board_after_gems_destroyed():
 			add_child(gem)
 			gem.board_position = Vector2i(idx, i)
 			var new_position = gem.calculate_gem_position_on_scene(padding)
-			tween.tween_property(gem, "position", new_position, 5)
+			tween.tween_property(gem, "position", new_position, .5)
 	
-	tween.connect("finished", finish_filling)
+	await tween.finished
+	cleanup_filling()
 
 func check_for_matches():
 	var gem1: Gem
 	var gem2: Gem
 	var gem3: Gem
 	var _destroy: Gem
-	var to_be_destroyed: bool
 	for y in range(BOARD_SIZE):
 		for x in range(BOARD_SIZE - 2):
 			gem1 = get_gem_on_position(x, y)
 			gem2 = get_gem_on_position(x + 1, y)
 			gem3 = get_gem_on_position(x + 2, y)
 			if gem1.gem_type == gem2.gem_type and gem2.gem_type == gem3.gem_type:
-				to_be_destroyed = true
 				for i in range(3):
 					_destroy = get_gem_on_position(x + i, y)
 					_destroy.add_to_group("gem_destroy")
@@ -153,17 +152,9 @@ func check_for_matches():
 			gem2 = get_gem_on_position(x, y + 1)
 			gem3 = get_gem_on_position(x, y + 2)
 			if gem1.gem_type == gem2.gem_type and gem2.gem_type == gem3.gem_type:
-				to_be_destroyed = true
 				for i in range(3):
 					_destroy = get_gem_on_position(x, y + i)
 					_destroy.add_to_group("gem_destroy")
-	
-	if to_be_destroyed:
-		state_machine.change_to_gem_destroy_state()
-		state_machine.change_to_board_filling_state()
-	else:
-		state_machine.change_to_gem_revert_state()
-		state_machine.change_to_default_state()
 
 # EVENTS
 func _handle_gem_selected(gem: Gem):
@@ -182,7 +173,18 @@ func _handle_gem_selected(gem: Gem):
 			if gem.is_in_group("gem_neighbors"):
 				gem.add_to_group("gem_selected")
 				# You clicked on neighbour
-				state_machine.change_to_gem_transition_state()
+				await state_machine.change_to_gem_transition_state()
+				if not get_tree().get_nodes_in_group("gem_destroy"):
+					await state_machine.change_to_gem_revert_state()
+					state_machine.change_to_default_state()
+					return
+				while true:
+					if get_tree().get_nodes_in_group("gem_destroy"):
+						await state_machine.change_to_gem_destroy_state()
+						await state_machine.change_to_board_filling_state()
+					else:
+						state_machine.change_to_default_state()
+						return
 			else:
 				# You clicked ouside of neighbourhood
 				state_machine.change_to_default_state()
