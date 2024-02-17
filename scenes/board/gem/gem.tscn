@@ -1,8 +1,8 @@
 [gd_scene load_steps=8 format=3 uid="uid://3evkn4mghfec"]
 
-[ext_resource type="Script" path="res://scenes/gem/gem.gd" id="1_ietch"]
-[ext_resource type="Texture2D" uid="uid://k7hb6fmilg4g" path="res://scenes/gem/sprites/x2.png" id="2_w8jyn"]
-[ext_resource type="Texture2D" uid="uid://c2yc5hji6r7bt" path="res://magic_circle.png" id="3_4x7dl"]
+[ext_resource type="Script" path="res://scenes/board/gem/gem.gd" id="1_o0twp"]
+[ext_resource type="Texture2D" uid="uid://k7hb6fmilg4g" path="res://scenes/board/gem/sprites/x2.png" id="2_3hu3j"]
+[ext_resource type="Texture2D" uid="uid://c2yc5hji6r7bt" path="res://scenes/board/gem/sprites/magic_circle.png" id="3_rv7ub"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_v47b8"]
 size = Vector2(128, 126)
@@ -75,7 +75,7 @@ anchors_preset = 0
 offset_right = 128.0
 offset_bottom = 128.0
 mouse_filter = 1
-script = ExtResource("1_ietch")
+script = ExtResource("1_o0twp")
 animation_player = NodePath("AnimationPlayer")
 gem_sprite = NodePath("Sprite2D")
 selection_sprite = NodePath("MagicCircle")
@@ -88,14 +88,14 @@ position = Vector2(64, 64)
 shape = SubResource("RectangleShape2D_v47b8")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("2_w8jyn")
+texture = ExtResource("2_3hu3j")
 centered = false
 
 [node name="MagicCircle" type="Sprite2D" parent="."]
 visible = false
 position = Vector2(64, 64)
 scale = Vector2(0.2, 0.2)
-texture = ExtResource("3_4x7dl")
+texture = ExtResource("3_rv7ub")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 root_node = NodePath("../MagicCircle")

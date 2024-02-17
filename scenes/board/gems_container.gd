@@ -16,7 +16,7 @@ var padding: Vector2 = Vector2.ZERO
 @onready var state_machine: BoardStateMachine = $"../../StateMachine"
 
 func _prepare_gem(v: Vector2i):
-	var gem = preload("res://scenes/gem/gem.tscn").instantiate()
+	var gem = preload("res://scenes/board/gem/gem.tscn").instantiate()
 	gem.board_position = v
 	gem.setup_gem_color()
 	gem.add_to_group("interaction")
@@ -29,7 +29,7 @@ func _ready():
 	randomize()
 	#var random_seed: int = randi()
 	var random_seed: int = 2642849264
-	print(str("Seed: ", random_seed))
+	print("Seed: %d" % random_seed)
 	seed(random_seed)
 	
 	for y in range(BOARD_SIZE):

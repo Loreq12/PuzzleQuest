@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b2vselsy58x3a"
-path="res://.godot/imported/x3.png-276725714a8ecc5b11845b4431d86827.ctex"
+uid="uid://c2yc5hji6r7bt"
+path="res://.godot/imported/magic_circle.png-7ed48217da3e259c6a9179c3f9a67067.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://scenes/gem/sprites/x3.png"
-dest_files=["res://.godot/imported/x3.png-276725714a8ecc5b11845b4431d86827.ctex"]
+source_file="res://scenes/board/gem/sprites/magic_circle.png"
+dest_files=["res://.godot/imported/magic_circle.png-7ed48217da3e259c6a9179c3f9a67067.ctex"]
 
 [params]
 

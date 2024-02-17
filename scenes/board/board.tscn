@@ -1,6 +1,6 @@
 [gd_scene load_steps=10 format=3 uid="uid://be442fhi42gni"]
 
-[ext_resource type="Texture2D" uid="uid://k7hb6fmilg4g" path="res://scenes/gem/sprites/x2.png" id="1_37ggg"]
+[ext_resource type="PackedScene" uid="uid://c74q38ccmlcvo" path="res://scenes/board/player_panel.tscn" id="1_56e58"]
 [ext_resource type="Script" path="res://scenes/board/gems_container.gd" id="2_s1mx3"]
 [ext_resource type="Script" path="res://scenes/board/board_state_machine.gd" id="3_sdqco"]
 [ext_resource type="Script" path="res://scenes/board/states/gem_selected.gd" id="4_22hrv"]
@@ -35,16 +35,8 @@ auto_translate = false
 localize_numeral_system = false
 mouse_filter = 2
 
-[node name="PlayerPanel" type="VBoxContainer" parent="HBoxContainer"]
-custom_minimum_size = Vector2(300, 2.08165e-12)
+[node name="PlayerPanel" parent="HBoxContainer" instance=ExtResource("1_56e58")]
 layout_mode = 2
-size_flags_horizontal = 0
-size_flags_stretch_ratio = 0.0
-
-[node name="Sprite2D" type="TextureRect" parent="HBoxContainer/PlayerPanel"]
-layout_mode = 2
-texture = ExtResource("1_37ggg")
-stretch_mode = 3
 
 [node name="Gems" type="Container" parent="HBoxContainer"]
 layout_mode = 2
@@ -53,16 +45,8 @@ mouse_filter = 2
 mouse_force_pass_scroll_events = false
 script = ExtResource("2_s1mx3")
 
-[node name="EnemyPanel" type="VBoxContainer" parent="HBoxContainer"]
-custom_minimum_size = Vector2(300, 2.08165e-12)
+[node name="PlayerPanel2" parent="HBoxContainer" instance=ExtResource("1_56e58")]
 layout_mode = 2
-size_flags_horizontal = 4
-size_flags_stretch_ratio = 0.0
-
-[node name="Sprite2D" type="TextureRect" parent="HBoxContainer/EnemyPanel"]
-layout_mode = 2
-texture = ExtResource("1_37ggg")
-stretch_mode = 3
 
 [node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
 script = ExtResource("3_sdqco")
