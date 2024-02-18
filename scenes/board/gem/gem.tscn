@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://3evkn4mghfec"]
 
 [ext_resource type="Script" path="res://scenes/board/gem/gem.gd" id="1_o0twp"]
-[ext_resource type="Texture2D" uid="uid://k7hb6fmilg4g" path="res://scenes/board/gem/sprites/x2.png" id="2_3hu3j"]
+[ext_resource type="Texture2D" uid="uid://mbygyxdw4h2i" path="res://scenes/board/gem/sprites/blue.png" id="2_3yccj"]
 [ext_resource type="Texture2D" uid="uid://c2yc5hji6r7bt" path="res://scenes/board/gem/sprites/magic_circle.png" id="3_rv7ub"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_v47b8"]
@@ -88,7 +88,8 @@ position = Vector2(64, 64)
 shape = SubResource("RectangleShape2D_v47b8")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("2_3hu3j")
+scale = Vector2(2, 2)
+texture = ExtResource("2_3yccj")
 centered = false
 
 [node name="MagicCircle" type="Sprite2D" parent="."]

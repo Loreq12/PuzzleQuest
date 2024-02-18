@@ -1,6 +1,6 @@
 [gd_scene load_steps=10 format=3 uid="uid://be442fhi42gni"]
 
-[ext_resource type="PackedScene" uid="uid://c74q38ccmlcvo" path="res://scenes/board/player_panel.tscn" id="1_56e58"]
+[ext_resource type="PackedScene" uid="uid://c74q38ccmlcvo" path="res://scenes/board/player_battle_panel.tscn" id="1_56e58"]
 [ext_resource type="Script" path="res://scenes/board/gems_container.gd" id="2_s1mx3"]
 [ext_resource type="Script" path="res://scenes/board/board_state_machine.gd" id="3_sdqco"]
 [ext_resource type="Script" path="res://scenes/board/states/gem_selected.gd" id="4_22hrv"]

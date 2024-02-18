@@ -1,0 +1,111 @@
+[gd_scene load_steps=3 format=3 uid="uid://ddvw82nigrd36"]
+
+[ext_resource type="Texture2D" uid="uid://np81gjn3ru1x" path="res://scenes/map/world_map.jpeg" id="1_adjao"]
+[ext_resource type="Script" path="res://scenes/map/map_scroll_control.gd" id="2_4osry"]
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+
+[node name="WorldMap" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = -1851.0
+offset_top = -1519.0
+offset_right = 2285.0
+offset_bottom = 2617.0
+texture = ExtResource("1_adjao")
+expand_mode = 4
+stretch_mode = 4
+script = ExtResource("2_4osry")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ScrollMapLeft" type="Control" parent="HBoxContainer"]
+custom_minimum_size = Vector2(100, 2.08165e-12)
+layout_mode = 2
+size_flags_horizontal = 2
+size_flags_stretch_ratio = 0.0
+mouse_filter = 1
+
+[node name="ColorRect" type="ColorRect" parent="HBoxContainer/ScrollMapLeft"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+color = Color(1, 0.470588, 0.470588, 0.431373)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ScrollMapUp" type="Control" parent="HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(2.08165e-12, 100)
+layout_mode = 2
+size_flags_vertical = 2
+mouse_filter = 1
+
+[node name="ColorRect" type="ColorRect" parent="HBoxContainer/VBoxContainer/ScrollMapUp"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+color = Color(1, 0.470588, 0.470588, 0.431373)
+
+[node name="ScrollMapDown" type="Control" parent="HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(2.08165e-12, 100)
+layout_mode = 2
+size_flags_vertical = 10
+mouse_filter = 1
+
+[node name="ColorRect" type="ColorRect" parent="HBoxContainer/VBoxContainer/ScrollMapDown"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+color = Color(1, 0.470588, 0.470588, 0.431373)
+
+[node name="ScrollMapRight" type="Control" parent="HBoxContainer"]
+custom_minimum_size = Vector2(100, 2.08165e-12)
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_stretch_ratio = 0.0
+mouse_filter = 1
+
+[node name="ColorRect" type="ColorRect" parent="HBoxContainer/ScrollMapRight"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+color = Color(1, 0.470588, 0.470588, 0.431373)
+
+[connection signal="mouse_entered" from="HBoxContainer/ScrollMapLeft" to="WorldMap" method="_on_scroll_map_left_mouse_entered"]
+[connection signal="mouse_exited" from="HBoxContainer/ScrollMapLeft" to="WorldMap" method="_on_scroll_map_mouse_exited"]
+[connection signal="mouse_entered" from="HBoxContainer/VBoxContainer/ScrollMapUp" to="WorldMap" method="_on_scroll_map_up_mouse_entered"]
+[connection signal="mouse_exited" from="HBoxContainer/VBoxContainer/ScrollMapUp" to="WorldMap" method="_on_scroll_map_mouse_exited"]
+[connection signal="mouse_entered" from="HBoxContainer/VBoxContainer/ScrollMapDown" to="WorldMap" method="_on_scroll_map_down_mouse_entered"]
+[connection signal="mouse_exited" from="HBoxContainer/VBoxContainer/ScrollMapDown" to="WorldMap" method="_on_scroll_map_mouse_exited"]
+[connection signal="mouse_entered" from="HBoxContainer/ScrollMapRight" to="WorldMap" method="_on_scroll_map_right_mouse_entered"]
+[connection signal="mouse_exited" from="HBoxContainer/ScrollMapRight" to="WorldMap" method="_on_scroll_map_mouse_exited"]

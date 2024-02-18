@@ -63,16 +63,16 @@ func calculate_gem_position_on_scene(padding: Vector2) -> Vector2:
 
 func _adjust_gem_color():
 	if gem_type == GEM_TYPE_E.RED:
-		$Sprite2D.modulate = Color(1, 0, 0)
+		$Sprite2D.texture = load("res://scenes/board/gem/sprites/red.png")
 		$Particle.color = Color(1, 0, 0)
 	elif gem_type == GEM_TYPE_E.BLUE:
-		$Sprite2D.modulate = Color(0, 0, 1)
+		$Sprite2D.texture = load("res://scenes/board/gem/sprites/blue.png")
 		$Particle.color = Color(0, 0, 1)
 	elif gem_type == GEM_TYPE_E.GREEN:
-		$Sprite2D.modulate = Color(0, 1, 0)
+		$Sprite2D.texture = load("res://scenes/board/gem/sprites/green.png")
 		$Particle.color = Color(0, 1, 0)
 	elif gem_type == GEM_TYPE_E.YELLOW:
-		$Sprite2D.modulate = Color(1, 1, 0)
+		$Sprite2D.texture = load("res://scenes/board/gem/sprites/yellow.png")
 		$Particle.color = Color(1, 1, 0)
 
 # EVENTS

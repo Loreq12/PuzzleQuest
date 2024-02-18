@@ -1,11 +1,122 @@
-[gd_scene load_steps=2 format=3 uid="uid://c74q38ccmlcvo"]
+[gd_scene load_steps=12 format=3 uid="uid://c74q38ccmlcvo"]
 
 [ext_resource type="Texture2D" uid="uid://k7hb6fmilg4g" path="res://scenes/board/gem/sprites/x2.png" id="1_vqcm7"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7wfie"]
+bg_color = Color(0.282353, 0, 0, 1)
+border_width_left = 10
+border_width_top = 5
+border_width_right = 10
+border_width_bottom = 8
+border_color = Color(0.545098, 0, 0, 1)
+border_blend = true
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hdwt8"]
+bg_color = Color(0.643137, 0, 0, 1)
+border_width_left = 10
+border_width_top = 5
+border_width_right = 10
+border_width_bottom = 8
+border_color = Color(0.980392, 0, 0, 1)
+border_blend = true
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6urj3"]
+bg_color = Color(0.137255, 0.364706, 0.0235294, 0.254902)
+border_width_left = 4
+border_width_top = 20
+border_width_right = 4
+border_width_bottom = 20
+border_color = Color(0.227451, 0.658824, 0.0392157, 0.321569)
+border_blend = true
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7kvo2"]
+bg_color = Color(0.368627, 0.878431, 0.0784314, 1)
+border_width_left = 2
+border_width_top = 5
+border_width_right = 2
+border_color = Color(0.227451, 0.658824, 0.0392157, 1)
+border_blend = true
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6lcqr"]
+bg_color = Color(0.372549, 0, 0.027451, 0.313726)
+border_width_left = 4
+border_width_top = 20
+border_width_right = 4
+border_width_bottom = 20
+border_color = Color(0.823529, 0, 0.054902, 0.164706)
+border_blend = true
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_l7v02"]
+bg_color = Color(0.67451, 0, 0.0352941, 1)
+border_width_left = 2
+border_width_top = 5
+border_width_right = 2
+border_color = Color(0.576471, 0, 0.027451, 1)
+border_blend = true
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_y1n64"]
+bg_color = Color(1, 0.835294, 0.0117647, 0.0980392)
+border_width_left = 4
+border_width_top = 20
+border_width_right = 4
+border_width_bottom = 20
+border_color = Color(1, 0.803922, 0.0117647, 0.262745)
+border_blend = true
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ax36f"]
+bg_color = Color(1, 0.803922, 0.0117647, 1)
+border_width_left = 2
+border_width_top = 5
+border_width_right = 2
+border_color = Color(0.760784, 0.607843, 0.00784314, 1)
+border_blend = true
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1neai"]
+bg_color = Color(0.0470588, 0.164706, 0.803922, 0.203922)
+border_width_left = 4
+border_width_top = 20
+border_width_right = 4
+border_width_bottom = 20
+border_color = Color(0.054902, 0.305882, 0.890196, 0.341176)
+border_blend = true
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_f70xm"]
+bg_color = Color(0.054902, 0.305882, 0.890196, 1)
+border_width_left = 2
+border_width_top = 5
+border_width_right = 2
+border_color = Color(0.0431373, 0.254902, 0.74902, 1)
+border_blend = true
+corner_radius_top_left = 5
+corner_radius_top_right = 5
 
 [node name="PlayerPanel" type="VBoxContainer"]
 custom_minimum_size = Vector2(300, 2.08165e-12)
 size_flags_horizontal = 0
 size_flags_stretch_ratio = 0.0
+theme_override_constants/separation = 0
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
@@ -16,9 +127,10 @@ theme_override_constants/margin_right = 15
 theme_override_constants/margin_bottom = 5
 
 [node name="ProgressBar" type="ProgressBar" parent="MarginContainer"]
-modulate = Color(0.980392, 0, 0, 1)
 custom_minimum_size = Vector2(2.08165e-12, 25)
 layout_mode = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_7wfie")
+theme_override_styles/fill = SubResource("StyleBoxFlat_hdwt8")
 step = 1.0
 value = 50.0
 rounded = true
@@ -88,16 +200,19 @@ text = "Level: 5"
 [node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_constants/separation = 15
 alignment = 1
 
 [node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/HBoxContainer"]
 layout_mode = 2
 
 [node name="ProgressBar" type="ProgressBar" parent="HBoxContainer/HBoxContainer/VBoxContainer"]
-modulate = Color(0.290196, 0.921569, 0, 1)
+clip_contents = true
 custom_minimum_size = Vector2(15, 2.08165e-12)
 layout_mode = 2
 size_flags_vertical = 3
+theme_override_styles/background = SubResource("StyleBoxFlat_6urj3")
+theme_override_styles/fill = SubResource("StyleBoxFlat_7kvo2")
 step = 1.0
 value = 25.0
 fill_mode = 3
@@ -118,20 +233,21 @@ text = "10"
 layout_mode = 2
 
 [node name="ProgressBar" type="ProgressBar" parent="HBoxContainer/HBoxContainer/VBoxContainer2"]
-modulate = Color(0.67451, 0, 0.0352941, 1)
 custom_minimum_size = Vector2(15, 2.08165e-12)
 layout_mode = 2
 size_flags_vertical = 3
+theme_override_styles/background = SubResource("StyleBoxFlat_6lcqr")
+theme_override_styles/fill = SubResource("StyleBoxFlat_l7v02")
 step = 1.0
 value = 34.0
 fill_mode = 3
 show_percentage = false
 
 [node name="ColorRect" type="ColorRect" parent="HBoxContainer/HBoxContainer/VBoxContainer2"]
-modulate = Color(0.67451, 0, 0.0352941, 1)
 custom_minimum_size = Vector2(15, 15)
 layout_mode = 2
 size_flags_vertical = 0
+color = Color(0.67451, 0, 0.0352941, 1)
 
 [node name="Label" type="Label" parent="HBoxContainer/HBoxContainer/VBoxContainer2"]
 layout_mode = 2
@@ -142,20 +258,21 @@ text = "10"
 layout_mode = 2
 
 [node name="ProgressBar" type="ProgressBar" parent="HBoxContainer/HBoxContainer/VBoxContainer3"]
-modulate = Color(0.74902, 0.65098, 0.0901961, 1)
 custom_minimum_size = Vector2(15, 2.08165e-12)
 layout_mode = 2
 size_flags_vertical = 3
+theme_override_styles/background = SubResource("StyleBoxFlat_y1n64")
+theme_override_styles/fill = SubResource("StyleBoxFlat_ax36f")
 step = 1.0
-value = 88.0
+value = 30.0
 fill_mode = 3
 show_percentage = false
 
 [node name="ColorRect" type="ColorRect" parent="HBoxContainer/HBoxContainer/VBoxContainer3"]
-modulate = Color(0.74902, 0.65098, 0.0901961, 1)
 custom_minimum_size = Vector2(15, 15)
 layout_mode = 2
 size_flags_vertical = 0
+color = Color(1, 0.803922, 0.0117647, 1)
 
 [node name="Label" type="Label" parent="HBoxContainer/HBoxContainer/VBoxContainer3"]
 layout_mode = 2
@@ -166,20 +283,21 @@ text = "10"
 layout_mode = 2
 
 [node name="ProgressBar" type="ProgressBar" parent="HBoxContainer/HBoxContainer/VBoxContainer4"]
-modulate = Color(0.0431373, 0.239216, 0.682353, 1)
 custom_minimum_size = Vector2(15, 2.08165e-12)
 layout_mode = 2
 size_flags_vertical = 3
+theme_override_styles/background = SubResource("StyleBoxFlat_1neai")
+theme_override_styles/fill = SubResource("StyleBoxFlat_f70xm")
 step = 1.0
 value = 12.0
 fill_mode = 3
 show_percentage = false
 
 [node name="ColorRect" type="ColorRect" parent="HBoxContainer/HBoxContainer/VBoxContainer4"]
-modulate = Color(0.0431373, 0.239216, 0.682353, 1)
 custom_minimum_size = Vector2(15, 15)
 layout_mode = 2
 size_flags_vertical = 0
+color = Color(0.054902, 0.305882, 0.890196, 1)
 
 [node name="Label" type="Label" parent="HBoxContainer/HBoxContainer/VBoxContainer4"]
 layout_mode = 2
@@ -356,7 +474,7 @@ text = "0%
 layout_mode = 2
 size_flags_vertical = 0
 theme_override_constants/margin_top = 5
-theme_override_constants/margin_bottom = 5
+theme_override_constants/margin_bottom = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer6"]
 layout_mode = 2
@@ -470,8 +588,7 @@ color = Color(0.533333, 0.533333, 0.533333, 1)
 [node name="MarginContainer7" type="MarginContainer" parent="."]
 layout_mode = 2
 size_flags_vertical = 0
-theme_override_constants/margin_top = 5
-theme_override_constants/margin_bottom = 5
+theme_override_constants/margin_bottom = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer7"]
 layout_mode = 2
@@ -585,8 +702,7 @@ color = Color(0.533333, 0.533333, 0.533333, 1)
 [node name="MarginContainer8" type="MarginContainer" parent="."]
 layout_mode = 2
 size_flags_vertical = 0
-theme_override_constants/margin_top = 5
-theme_override_constants/margin_bottom = 5
+theme_override_constants/margin_bottom = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer8"]
 layout_mode = 2
@@ -700,8 +816,7 @@ color = Color(0.533333, 0.533333, 0.533333, 1)
 [node name="MarginContainer9" type="MarginContainer" parent="."]
 layout_mode = 2
 size_flags_vertical = 0
-theme_override_constants/margin_top = 5
-theme_override_constants/margin_bottom = 5
+theme_override_constants/margin_bottom = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer9"]
 layout_mode = 2
@@ -815,8 +930,7 @@ color = Color(0.533333, 0.533333, 0.533333, 1)
 [node name="MarginContainer10" type="MarginContainer" parent="."]
 layout_mode = 2
 size_flags_vertical = 0
-theme_override_constants/margin_top = 5
-theme_override_constants/margin_bottom = 5
+theme_override_constants/margin_bottom = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer10"]
 layout_mode = 2
@@ -930,8 +1044,7 @@ color = Color(0.533333, 0.533333, 0.533333, 1)
 [node name="MarginContainer11" type="MarginContainer" parent="."]
 layout_mode = 2
 size_flags_vertical = 0
-theme_override_constants/margin_top = 5
-theme_override_constants/margin_bottom = 5
+theme_override_constants/margin_bottom = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer11"]
 layout_mode = 2
@@ -1037,6 +1150,120 @@ size_flags_vertical = 8
 text = "10"
 
 [node name="ColorRect3" type="ColorRect" parent="MarginContainer11/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(15, 2.08165e-12)
+layout_mode = 2
+size_flags_horizontal = 8
+color = Color(0.533333, 0.533333, 0.533333, 1)
+
+[node name="MarginContainer12" type="MarginContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/margin_bottom = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer12"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer12/VBoxContainer"]
+custom_minimum_size = Vector2(2.08165e-12, 80)
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="MarginContainer12/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(15, 2.08165e-12)
+layout_mode = 2
+color = Color(0.533333, 0.533333, 0.533333, 1)
+
+[node name="Control" type="Control" parent="MarginContainer12/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ColorRect2" type="ColorRect" parent="MarginContainer12/VBoxContainer/HBoxContainer/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+color = Color(0.403922, 0.403922, 0.403922, 1)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer12/VBoxContainer/HBoxContainer/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="MarginContainer12/VBoxContainer/HBoxContainer/Control/VBoxContainer"]
+layout_mode = 2
+text = "Divine Right"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer12/VBoxContainer/HBoxContainer/Control/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer12/VBoxContainer/HBoxContainer/Control/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="MarginContainer12/VBoxContainer/HBoxContainer/Control/VBoxContainer/HBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(25, 25)
+layout_mode = 2
+size_flags_vertical = 0
+color = Color(0.290196, 0.921569, 0, 1)
+
+[node name="Label" type="Label" parent="MarginContainer12/VBoxContainer/HBoxContainer/Control/VBoxContainer/HBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 8
+text = "10"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer12/VBoxContainer/HBoxContainer/Control/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="MarginContainer12/VBoxContainer/HBoxContainer/Control/VBoxContainer/HBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(25, 25)
+layout_mode = 2
+size_flags_vertical = 0
+color = Color(0.67451, 0, 0.0352941, 1)
+
+[node name="Label" type="Label" parent="MarginContainer12/VBoxContainer/HBoxContainer/Control/VBoxContainer/HBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_vertical = 8
+text = "10"
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer12/VBoxContainer/HBoxContainer/Control/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="MarginContainer12/VBoxContainer/HBoxContainer/Control/VBoxContainer/HBoxContainer/HBoxContainer3"]
+custom_minimum_size = Vector2(25, 25)
+layout_mode = 2
+size_flags_vertical = 0
+color = Color(0.74902, 0.65098, 0.0901961, 1)
+
+[node name="Label" type="Label" parent="MarginContainer12/VBoxContainer/HBoxContainer/Control/VBoxContainer/HBoxContainer/HBoxContainer3"]
+layout_mode = 2
+size_flags_vertical = 8
+text = "10"
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer12/VBoxContainer/HBoxContainer/Control/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="MarginContainer12/VBoxContainer/HBoxContainer/Control/VBoxContainer/HBoxContainer/HBoxContainer4"]
+custom_minimum_size = Vector2(25, 25)
+layout_mode = 2
+size_flags_vertical = 0
+color = Color(0.0431373, 0.239216, 0.682353, 1)
+
+[node name="Label" type="Label" parent="MarginContainer12/VBoxContainer/HBoxContainer/Control/VBoxContainer/HBoxContainer/HBoxContainer4"]
+layout_mode = 2
+size_flags_vertical = 8
+text = "10"
+
+[node name="ColorRect3" type="ColorRect" parent="MarginContainer12/VBoxContainer/HBoxContainer"]
 custom_minimum_size = Vector2(15, 2.08165e-12)
 layout_mode = 2
 size_flags_horizontal = 8
