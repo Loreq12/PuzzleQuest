@@ -1,3 +1,4 @@
+@tool
 extends Control
 
 @export var current_city: MapCity
@@ -12,6 +13,11 @@ func _ready():
 	for child in get_children():
 		for neighbour in child.neighbours:
 			city_graph.connect_points(child.get_index(), neighbour.get_index())
+
+func _process(delta):
+	if Engine.is_editor_hint():
+		queue_redraw()
+		
 			
 func _draw():
 	var selected_path_width: int = 3
@@ -37,7 +43,6 @@ func _on_city_highlight(city: MapCity):
 	
 	selected_city = city
 	queue_redraw()
-	#print(city_graph.get_point_path(current_city.get_index(), city.get_index()))
 
 
 func _on_city_left(city: MapCity):

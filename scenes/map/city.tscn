@@ -22,5 +22,15 @@ shape = SubResource("RectangleShape2D_56ekq")
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("1_y3yri")
 
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_left = -86.0
+offset_top = 34.0
+offset_right = 88.0
+offset_bottom = 57.0
+text = "Testowo"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [connection signal="mouse_entered" from="Collider" to="." method="_on_collider_mouse_entered"]
 [connection signal="mouse_exited" from="Collider" to="." method="_on_collider_mouse_exited"]

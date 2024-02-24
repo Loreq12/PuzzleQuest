@@ -1,3 +1,4 @@
+@tool
 extends Control
 class_name MapCity
 
@@ -5,6 +6,15 @@ class_name MapCity
 
 signal city_highlight(city: MapCity)
 signal city_left(city: MapCity)
+
+func _ready():
+	$Label.text = self.name
+	
+	
+func _process(delta):
+	if Engine.is_editor_hint():
+		$Label.text = self.name
+
 
 func _on_collider_mouse_entered():
 	city_highlight.emit(self)

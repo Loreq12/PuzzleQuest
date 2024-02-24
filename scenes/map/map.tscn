@@ -58,18 +58,74 @@ offset_bottom = 1917.0
 neighbours = [NodePath("../Bartonia")]
 
 [node name="Elenia" parent="WorldMap/Cities" node_paths=PackedStringArray("neighbours") instance=ExtResource("4_b0wlx")]
-offset_left = 2597.0
-offset_top = 1974.0
-offset_right = 2597.0
-offset_bottom = 1974.0
-neighbours = [NodePath("../Bartonia")]
+offset_left = 2615.0
+offset_top = 2016.0
+offset_right = 2615.0
+offset_bottom = 2016.0
+neighbours = [NodePath("../Bartonia"), NodePath("../Ancient Grove"), NodePath("../Enmouth"), NodePath("../The Trarg")]
 
 [node name="Theira" parent="WorldMap/Cities" node_paths=PackedStringArray("neighbours") instance=ExtResource("4_b0wlx")]
 offset_left = 2951.0
 offset_top = 1707.0
 offset_right = 2951.0
 offset_bottom = 1707.0
-neighbours = [NodePath("../Bartonia")]
+neighbours = [NodePath("../Bartonia"), NodePath("../Royal Crypt")]
+
+[node name="Royal Crypt" parent="WorldMap/Cities" node_paths=PackedStringArray("neighbours") instance=ExtResource("4_b0wlx")]
+offset_left = 2843.0
+offset_top = 1725.0
+offset_right = 2843.0
+offset_bottom = 1725.0
+neighbours = [NodePath("../Theira")]
+
+[node name="Ancient Grove" parent="WorldMap/Cities" node_paths=PackedStringArray("neighbours") instance=ExtResource("4_b0wlx")]
+offset_left = 2632.0
+offset_top = 1833.0
+offset_right = 2632.0
+offset_bottom = 1833.0
+neighbours = [NodePath("../Elenia")]
+
+[node name="Enmouth" parent="WorldMap/Cities" node_paths=PackedStringArray("neighbours") instance=ExtResource("4_b0wlx")]
+offset_left = 2424.0
+offset_top = 1803.0
+offset_right = 2424.0
+offset_bottom = 1803.0
+neighbours = [NodePath("../Elenia"), NodePath("../Barthel")]
+
+[node name="Barthel" parent="WorldMap/Cities" node_paths=PackedStringArray("neighbours") instance=ExtResource("4_b0wlx")]
+offset_left = 2303.0
+offset_top = 2146.0
+offset_right = 2303.0
+offset_bottom = 2146.0
+neighbours = [NodePath("../Enmouth"), NodePath("../Slaver Camp"), NodePath("../The Trarg"), NodePath("../Dark Path Shrine"), NodePath("../Old Outpost")]
+
+[node name="Slaver Camp" parent="WorldMap/Cities" node_paths=PackedStringArray("neighbours") instance=ExtResource("4_b0wlx")]
+offset_left = 2354.0
+offset_top = 2354.0
+offset_right = 2354.0
+offset_bottom = 2354.0
+neighbours = [NodePath("../Barthel")]
+
+[node name="The Trarg" parent="WorldMap/Cities" node_paths=PackedStringArray("neighbours") instance=ExtResource("4_b0wlx")]
+offset_left = 2546.0
+offset_top = 2331.0
+offset_right = 2546.0
+offset_bottom = 2331.0
+neighbours = [NodePath("../Barthel"), NodePath("../Elenia")]
+
+[node name="Dark Path Shrine" parent="WorldMap/Cities" node_paths=PackedStringArray("neighbours") instance=ExtResource("4_b0wlx")]
+offset_left = 2469.0
+offset_top = 2151.0
+offset_right = 2469.0
+offset_bottom = 2151.0
+neighbours = [NodePath("../Barthel")]
+
+[node name="Old Outpost" parent="WorldMap/Cities" node_paths=PackedStringArray("neighbours") instance=ExtResource("4_b0wlx")]
+offset_left = 2446.0
+offset_top = 2018.0
+offset_right = 2446.0
+offset_bottom = 2018.0
+neighbours = [NodePath("../Barthel")]
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 visible = false
@@ -160,6 +216,22 @@ color = Color(1, 0.470588, 0.470588, 0.431373)
 [connection signal="city_left" from="WorldMap/Cities/Elenia" to="WorldMap/Cities" method="_on_city_left"]
 [connection signal="city_highlight" from="WorldMap/Cities/Theira" to="WorldMap/Cities" method="_on_city_highlight"]
 [connection signal="city_left" from="WorldMap/Cities/Theira" to="WorldMap/Cities" method="_on_city_left"]
+[connection signal="city_highlight" from="WorldMap/Cities/Royal Crypt" to="WorldMap/Cities" method="_on_city_highlight"]
+[connection signal="city_left" from="WorldMap/Cities/Royal Crypt" to="WorldMap/Cities" method="_on_city_left"]
+[connection signal="city_highlight" from="WorldMap/Cities/Ancient Grove" to="WorldMap/Cities" method="_on_city_highlight"]
+[connection signal="city_left" from="WorldMap/Cities/Ancient Grove" to="WorldMap/Cities" method="_on_city_left"]
+[connection signal="city_highlight" from="WorldMap/Cities/Enmouth" to="WorldMap/Cities" method="_on_city_highlight"]
+[connection signal="city_left" from="WorldMap/Cities/Enmouth" to="WorldMap/Cities" method="_on_city_left"]
+[connection signal="city_highlight" from="WorldMap/Cities/Barthel" to="WorldMap/Cities" method="_on_city_highlight"]
+[connection signal="city_left" from="WorldMap/Cities/Barthel" to="WorldMap/Cities" method="_on_city_left"]
+[connection signal="city_highlight" from="WorldMap/Cities/Slaver Camp" to="WorldMap/Cities" method="_on_city_highlight"]
+[connection signal="city_left" from="WorldMap/Cities/Slaver Camp" to="WorldMap/Cities" method="_on_city_left"]
+[connection signal="city_highlight" from="WorldMap/Cities/The Trarg" to="WorldMap/Cities" method="_on_city_highlight"]
+[connection signal="city_left" from="WorldMap/Cities/The Trarg" to="WorldMap/Cities" method="_on_city_left"]
+[connection signal="city_highlight" from="WorldMap/Cities/Dark Path Shrine" to="WorldMap/Cities" method="_on_city_highlight"]
+[connection signal="city_left" from="WorldMap/Cities/Dark Path Shrine" to="WorldMap/Cities" method="_on_city_left"]
+[connection signal="city_highlight" from="WorldMap/Cities/Old Outpost" to="WorldMap/Cities" method="_on_city_highlight"]
+[connection signal="city_left" from="WorldMap/Cities/Old Outpost" to="WorldMap/Cities" method="_on_city_left"]
 [connection signal="mouse_entered" from="HBoxContainer/ScrollMapLeft" to="WorldMap" method="_on_scroll_map_left_mouse_entered"]
 [connection signal="mouse_exited" from="HBoxContainer/ScrollMapLeft" to="WorldMap" method="_on_scroll_map_mouse_exited"]
 [connection signal="mouse_entered" from="HBoxContainer/VBoxContainer/ScrollMapUp" to="WorldMap" method="_on_scroll_map_up_mouse_entered"]
