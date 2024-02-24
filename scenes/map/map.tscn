@@ -1,7 +1,10 @@
-[gd_scene load_steps=3 format=3 uid="uid://ddvw82nigrd36"]
+[gd_scene load_steps=6 format=3 uid="uid://ddvw82nigrd36"]
 
 [ext_resource type="Texture2D" uid="uid://np81gjn3ru1x" path="res://scenes/map/world_map.jpeg" id="1_adjao"]
 [ext_resource type="Script" path="res://scenes/map/map_scroll_control.gd" id="2_4osry"]
+[ext_resource type="Script" path="res://scenes/map/map_cities.gd" id="3_ijojs"]
+[ext_resource type="Script" path="res://scripts/graph/map_graph.gd" id="3_n11jy"]
+[ext_resource type="Script" path="res://scripts/graph/map_graph_node.gd" id="4_2n6y6"]
 
 [node name="Control" type="Control"]
 layout_mode = 3
@@ -22,6 +25,15 @@ texture = ExtResource("1_adjao")
 expand_mode = 4
 stretch_mode = 4
 script = ExtResource("2_4osry")
+
+[node name="Control" type="Control" parent="WorldMap"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("3_ijojs")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 1
@@ -100,6 +112,34 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
 color = Color(1, 0.470588, 0.470588, 0.431373)
+
+[node name="CitiesGraph" type="Node" parent="."]
+script = ExtResource("3_n11jy")
+
+[node name="Gildor" type="Node" parent="CitiesGraph" node_paths=PackedStringArray("neighbours")]
+script = ExtResource("4_2n6y6")
+neighbours = [NodePath("../Bartonia")]
+position = Vector2i(2900, 2130)
+
+[node name="Siria" type="Node" parent="CitiesGraph" node_paths=PackedStringArray("neighbours")]
+script = ExtResource("4_2n6y6")
+neighbours = [NodePath("../Bartonia")]
+position = Vector2i(3120, 1920)
+
+[node name="Elenia" type="Node" parent="CitiesGraph" node_paths=PackedStringArray("neighbours")]
+script = ExtResource("4_2n6y6")
+neighbours = [NodePath("../Bartonia")]
+position = Vector2i(2600, 2000)
+
+[node name="Theira" type="Node" parent="CitiesGraph" node_paths=PackedStringArray("neighbours")]
+script = ExtResource("4_2n6y6")
+neighbours = [NodePath("../Bartonia")]
+position = Vector2i(2970, 1700)
+
+[node name="Bartonia" type="Node" parent="CitiesGraph" node_paths=PackedStringArray("neighbours")]
+script = ExtResource("4_2n6y6")
+neighbours = [NodePath("../Elenia"), NodePath("../Gildor"), NodePath("../Siria"), NodePath("../Theira")]
+position = Vector2i(2850, 1900)
 
 [connection signal="mouse_entered" from="HBoxContainer/ScrollMapLeft" to="WorldMap" method="_on_scroll_map_left_mouse_entered"]
 [connection signal="mouse_exited" from="HBoxContainer/ScrollMapLeft" to="WorldMap" method="_on_scroll_map_mouse_exited"]
