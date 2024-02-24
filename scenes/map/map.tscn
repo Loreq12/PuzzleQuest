@@ -116,30 +116,35 @@ color = Color(1, 0.470588, 0.470588, 0.431373)
 [node name="CitiesGraph" type="Node" parent="."]
 script = ExtResource("3_n11jy")
 
+[node name="Bartonia" type="Node" parent="CitiesGraph" node_paths=PackedStringArray("neighbours")]
+script = ExtResource("4_2n6y6")
+neighbours = [NodePath("../Elenia"), NodePath("../Gildor"), NodePath("../Siria"), NodePath("../Theira")]
+position = Vector2i(2850, 1900)
+visible = true
+
 [node name="Gildor" type="Node" parent="CitiesGraph" node_paths=PackedStringArray("neighbours")]
 script = ExtResource("4_2n6y6")
 neighbours = [NodePath("../Bartonia")]
 position = Vector2i(2900, 2130)
+visible = true
 
 [node name="Siria" type="Node" parent="CitiesGraph" node_paths=PackedStringArray("neighbours")]
 script = ExtResource("4_2n6y6")
 neighbours = [NodePath("../Bartonia")]
 position = Vector2i(3120, 1920)
+visible = true
 
 [node name="Elenia" type="Node" parent="CitiesGraph" node_paths=PackedStringArray("neighbours")]
 script = ExtResource("4_2n6y6")
 neighbours = [NodePath("../Bartonia")]
 position = Vector2i(2600, 2000)
+visible = true
 
 [node name="Theira" type="Node" parent="CitiesGraph" node_paths=PackedStringArray("neighbours")]
 script = ExtResource("4_2n6y6")
 neighbours = [NodePath("../Bartonia")]
 position = Vector2i(2970, 1700)
-
-[node name="Bartonia" type="Node" parent="CitiesGraph" node_paths=PackedStringArray("neighbours")]
-script = ExtResource("4_2n6y6")
-neighbours = [NodePath("../Elenia"), NodePath("../Gildor"), NodePath("../Siria"), NodePath("../Theira")]
-position = Vector2i(2850, 1900)
+visible = true
 
 [connection signal="mouse_entered" from="HBoxContainer/ScrollMapLeft" to="WorldMap" method="_on_scroll_map_left_mouse_entered"]
 [connection signal="mouse_exited" from="HBoxContainer/ScrollMapLeft" to="WorldMap" method="_on_scroll_map_mouse_exited"]

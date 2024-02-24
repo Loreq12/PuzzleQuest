@@ -5,14 +5,14 @@ class_name MapGraph
 var nodes: Dictionary = {}
 
 func _ready():
-	print("kkrwa")
 	for child in get_children():
 		if child is MapGraphNode:
 			nodes[child.name.to_lower()] = child
 			
-	print(find_path($Bartonia, $Bartonia4))
-
 func find_path(start_node: MapGraphNode, end_node: MapGraphNode) -> Array[MapGraphNode]:
+	if not end_node.visible:
+		return []
+
 	var visited = []
 	var queue = []
 	queue.append([start_node])
@@ -37,3 +37,19 @@ func find_path(start_node: MapGraphNode, end_node: MapGraphNode) -> Array[MapGra
 					return new_path
 			visited.append(current_node)
 	return []
+
+func get_edges():
+	var result: Dictionary = {}
+	for node in nodes.values():
+		if not node.visible:
+			continue
+		result[node] = []
+		for neighbour in node.neighbours:
+			if result.has(neighbour):
+				continue
+			if neighbour.visible:
+				result[node].append(neighbour)
+		if not result[node]:
+			result.erase(node)
+				
+	return result

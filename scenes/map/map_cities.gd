@@ -6,10 +6,16 @@ extends Control
 
 func _process(delta):
 	if Engine.is_editor_hint():
+		print(cities_graph.get_edges())
 		queue_redraw()
-	#print("kurwa")
-	#draw.emit()
 
 func _draw():
+	var edges: Dictionary = cities_graph.get_edges()
+	for city in edges:
+		for target in edges[city]:
+			draw_line(city.position, target.position, Color.BLACK, 5)
+
 	for city in cities_graph.nodes.values():
+		if not city.visible:
+			continue
 		draw_circle(city.position, 25, Color.CORNFLOWER_BLUE)
