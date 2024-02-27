@@ -1,9 +1,21 @@
-[gd_scene load_steps=5 format=3 uid="uid://ddvw82nigrd36"]
+[gd_scene load_steps=12 format=3 uid="uid://ddvw82nigrd36"]
 
 [ext_resource type="Texture2D" uid="uid://np81gjn3ru1x" path="res://scenes/map/world_map.jpeg" id="1_adjao"]
 [ext_resource type="Script" path="res://scenes/map/map_scroll_control.gd" id="2_4osry"]
 [ext_resource type="Script" path="res://scenes/map/map_cities.gd" id="3_ijojs"]
 [ext_resource type="PackedScene" uid="uid://suelfuunbtew" path="res://scenes/map/city.tscn" id="4_b0wlx"]
+[ext_resource type="Script" path="res://scenes/map/map_player.gd" id="5_5tn6g"]
+[ext_resource type="Script" path="res://scenes/map/map_state_machine.gd" id="6_iq01a"]
+[ext_resource type="Script" path="res://scenes/map/states/map_default.gd" id="7_mvlr7"]
+[ext_resource type="Script" path="res://scenes/map/states/city_selected.gd" id="7_vquuk"]
+[ext_resource type="Script" path="res://scenes/map/states/city_transition.gd" id="9_abir3"]
+
+[sub_resource type="Gradient" id="Gradient_lpvxe"]
+offsets = PackedFloat32Array(0, 0.488235, 1)
+colors = PackedColorArray(0, 0, 0, 0.333333, 0.594118, 0.594118, 0.594118, 1, 1, 1, 1, 0.333333)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_kjfn3"]
+gradient = SubResource("Gradient_lpvxe")
 
 [node name="Control" type="Control"]
 layout_mode = 3
@@ -127,8 +139,13 @@ offset_right = 2446.0
 offset_bottom = 2018.0
 neighbours = [NodePath("../Barthel")]
 
+[node name="Player" type="Sprite2D" parent="WorldMap" node_paths=PackedStringArray("current_city")]
+position = Vector2(2844, 1880)
+texture = SubResource("GradientTexture2D_kjfn3")
+script = ExtResource("5_5tn6g")
+current_city = NodePath("../Cities/Bartonia")
+
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
-visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -206,32 +223,59 @@ grow_vertical = 2
 mouse_filter = 1
 color = Color(1, 0.470588, 0.470588, 0.431373)
 
+[node name="MapStateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
+script = ExtResource("6_iq01a")
+initial_state = NodePath("MapDefaultState")
+
+[node name="MapCitySelected" type="Node" parent="MapStateMachine"]
+script = ExtResource("7_vquuk")
+
+[node name="MapDefaultState" type="Node" parent="MapStateMachine"]
+script = ExtResource("7_mvlr7")
+
+[node name="MapCityTransition" type="Node" parent="MapStateMachine" node_paths=PackedStringArray("cities")]
+script = ExtResource("9_abir3")
+cities = NodePath("../../WorldMap/Cities")
+
 [connection signal="city_highlight" from="WorldMap/Cities/Bartonia" to="WorldMap/Cities" method="_on_city_highlight"]
 [connection signal="city_left" from="WorldMap/Cities/Bartonia" to="WorldMap/Cities" method="_on_city_left"]
+[connection signal="city_selected" from="WorldMap/Cities/Bartonia" to="WorldMap/Cities" method="_on_city_selected"]
 [connection signal="city_highlight" from="WorldMap/Cities/Gildor" to="WorldMap/Cities" method="_on_city_highlight"]
 [connection signal="city_left" from="WorldMap/Cities/Gildor" to="WorldMap/Cities" method="_on_city_left"]
+[connection signal="city_selected" from="WorldMap/Cities/Gildor" to="WorldMap/Cities" method="_on_city_selected"]
 [connection signal="city_highlight" from="WorldMap/Cities/Siria" to="WorldMap/Cities" method="_on_city_highlight"]
 [connection signal="city_left" from="WorldMap/Cities/Siria" to="WorldMap/Cities" method="_on_city_left"]
+[connection signal="city_selected" from="WorldMap/Cities/Siria" to="WorldMap/Cities" method="_on_city_selected"]
 [connection signal="city_highlight" from="WorldMap/Cities/Elenia" to="WorldMap/Cities" method="_on_city_highlight"]
 [connection signal="city_left" from="WorldMap/Cities/Elenia" to="WorldMap/Cities" method="_on_city_left"]
+[connection signal="city_selected" from="WorldMap/Cities/Elenia" to="WorldMap/Cities" method="_on_city_selected"]
 [connection signal="city_highlight" from="WorldMap/Cities/Theira" to="WorldMap/Cities" method="_on_city_highlight"]
 [connection signal="city_left" from="WorldMap/Cities/Theira" to="WorldMap/Cities" method="_on_city_left"]
+[connection signal="city_selected" from="WorldMap/Cities/Theira" to="WorldMap/Cities" method="_on_city_selected"]
 [connection signal="city_highlight" from="WorldMap/Cities/Royal Crypt" to="WorldMap/Cities" method="_on_city_highlight"]
 [connection signal="city_left" from="WorldMap/Cities/Royal Crypt" to="WorldMap/Cities" method="_on_city_left"]
+[connection signal="city_selected" from="WorldMap/Cities/Royal Crypt" to="WorldMap/Cities" method="_on_city_selected"]
 [connection signal="city_highlight" from="WorldMap/Cities/Ancient Grove" to="WorldMap/Cities" method="_on_city_highlight"]
 [connection signal="city_left" from="WorldMap/Cities/Ancient Grove" to="WorldMap/Cities" method="_on_city_left"]
+[connection signal="city_selected" from="WorldMap/Cities/Ancient Grove" to="WorldMap/Cities" method="_on_city_selected"]
 [connection signal="city_highlight" from="WorldMap/Cities/Enmouth" to="WorldMap/Cities" method="_on_city_highlight"]
 [connection signal="city_left" from="WorldMap/Cities/Enmouth" to="WorldMap/Cities" method="_on_city_left"]
+[connection signal="city_selected" from="WorldMap/Cities/Enmouth" to="WorldMap/Cities" method="_on_city_selected"]
 [connection signal="city_highlight" from="WorldMap/Cities/Barthel" to="WorldMap/Cities" method="_on_city_highlight"]
 [connection signal="city_left" from="WorldMap/Cities/Barthel" to="WorldMap/Cities" method="_on_city_left"]
+[connection signal="city_selected" from="WorldMap/Cities/Barthel" to="WorldMap/Cities" method="_on_city_selected"]
 [connection signal="city_highlight" from="WorldMap/Cities/Slaver Camp" to="WorldMap/Cities" method="_on_city_highlight"]
 [connection signal="city_left" from="WorldMap/Cities/Slaver Camp" to="WorldMap/Cities" method="_on_city_left"]
+[connection signal="city_selected" from="WorldMap/Cities/Slaver Camp" to="WorldMap/Cities" method="_on_city_selected"]
 [connection signal="city_highlight" from="WorldMap/Cities/The Trarg" to="WorldMap/Cities" method="_on_city_highlight"]
 [connection signal="city_left" from="WorldMap/Cities/The Trarg" to="WorldMap/Cities" method="_on_city_left"]
+[connection signal="city_selected" from="WorldMap/Cities/The Trarg" to="WorldMap/Cities" method="_on_city_selected"]
 [connection signal="city_highlight" from="WorldMap/Cities/Dark Path Shrine" to="WorldMap/Cities" method="_on_city_highlight"]
 [connection signal="city_left" from="WorldMap/Cities/Dark Path Shrine" to="WorldMap/Cities" method="_on_city_left"]
+[connection signal="city_selected" from="WorldMap/Cities/Dark Path Shrine" to="WorldMap/Cities" method="_on_city_selected"]
 [connection signal="city_highlight" from="WorldMap/Cities/Old Outpost" to="WorldMap/Cities" method="_on_city_highlight"]
 [connection signal="city_left" from="WorldMap/Cities/Old Outpost" to="WorldMap/Cities" method="_on_city_left"]
+[connection signal="city_selected" from="WorldMap/Cities/Old Outpost" to="WorldMap/Cities" method="_on_city_selected"]
 [connection signal="mouse_entered" from="HBoxContainer/ScrollMapLeft" to="WorldMap" method="_on_scroll_map_left_mouse_entered"]
 [connection signal="mouse_exited" from="HBoxContainer/ScrollMapLeft" to="WorldMap" method="_on_scroll_map_mouse_exited"]
 [connection signal="mouse_entered" from="HBoxContainer/VBoxContainer/ScrollMapUp" to="WorldMap" method="_on_scroll_map_up_mouse_entered"]

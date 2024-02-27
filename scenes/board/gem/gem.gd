@@ -4,8 +4,6 @@ class_name Gem
 
 # SIGNALS
 signal s_gem_selected(gem: Gem)
-signal gem_finished_transition(gem: Gem)
-signal gem_destroyed(board_position: Vector2)
 
 # DEF
 enum GEM_TYPE_E {RED, BLUE, YELLOW, GREEN}
@@ -79,4 +77,4 @@ func _adjust_gem_color():
 func _input_event_handle(_viewport, event, _shape_idx):
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
-			emit_signal("s_gem_selected", self)
+			s_gem_selected.emit(self)
