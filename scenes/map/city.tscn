@@ -6,7 +6,7 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_56ekq"]
 size = Vector2(72, 74)
 
-[node name="Control" type="Control"]
+[node name="Control" type="Control" groups=["interaction_on_travel"]]
 layout_mode = 3
 anchors_preset = 0
 mouse_filter = 1
