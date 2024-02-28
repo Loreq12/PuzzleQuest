@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://scenes/board/gem/gem.gd" id="1_o0twp"]
 [ext_resource type="Texture2D" uid="uid://mbygyxdw4h2i" path="res://scenes/board/gem/sprites/blue.png" id="2_3yccj"]
-[ext_resource type="Texture2D" uid="uid://c2yc5hji6r7bt" path="res://scenes/board/gem/sprites/magic_circle.png" id="3_rv7ub"]
+[ext_resource type="Texture2D" uid="uid://dkjgyfqr7c3mw" path="res://scenes/board/gem/sprites/player_selection.png" id="3_hlo65"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_v47b8"]
 size = Vector2(128, 126)
@@ -60,7 +60,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0, 1.5, 3),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [Vector2(0.2, 0.2), Vector2(0.3, 0.3), Vector2(0.2, 0.2)]
+"values": [Vector2(2, 2), Vector2(2.7, 2.7), Vector2(2, 2)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_tbf50"]
@@ -93,10 +93,9 @@ texture = ExtResource("2_3yccj")
 centered = false
 
 [node name="MagicCircle" type="Sprite2D" parent="."]
-visible = false
 position = Vector2(64, 64)
 scale = Vector2(0.2, 0.2)
-texture = ExtResource("3_rv7ub")
+texture = ExtResource("3_hlo65")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 root_node = NodePath("../MagicCircle")
