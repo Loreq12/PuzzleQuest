@@ -47,6 +47,7 @@ func transition_player_to_city():
 	for i in range(1, path.size()):
 		tween.tween_property($"../Player", "position", path[i], 1.5)
 		tween.tween_callback(func (): current_city = get_child(cities[i]))
+	await tween.finished
 
 func _on_city_highlight(city: MapCity):
 	if city == current_city:
