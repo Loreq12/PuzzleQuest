@@ -48,91 +48,91 @@ mouse_filter = 1
 script = ExtResource("3_ijojs")
 current_city = NodePath("Bartonia")
 
-[node name="Bartonia" parent="WorldMap/Cities" node_paths=PackedStringArray("neighbours") instance=ExtResource("4_b0wlx")]
+[node name="Bartonia" parent="WorldMap/Cities" node_paths=PackedStringArray("neighbours") groups=["city_on_map"] instance=ExtResource("4_b0wlx")]
 offset_left = 2844.0
 offset_top = 1880.0
 offset_right = 2844.0
 offset_bottom = 1880.0
 neighbours = [NodePath("../Gildor"), NodePath("../Siria"), NodePath("../Elenia"), NodePath("../Theira")]
 
-[node name="Gildor" parent="WorldMap/Cities" node_paths=PackedStringArray("neighbours") instance=ExtResource("4_b0wlx")]
+[node name="Gildor" parent="WorldMap/Cities" node_paths=PackedStringArray("neighbours") groups=["city_on_map"] instance=ExtResource("4_b0wlx")]
 offset_left = 2887.0
 offset_top = 2089.0
 offset_right = 2887.0
 offset_bottom = 2089.0
 neighbours = [NodePath("../Bartonia")]
 
-[node name="Siria" parent="WorldMap/Cities" node_paths=PackedStringArray("neighbours") instance=ExtResource("4_b0wlx")]
+[node name="Siria" parent="WorldMap/Cities" node_paths=PackedStringArray("neighbours") groups=["city_on_map"] instance=ExtResource("4_b0wlx")]
 offset_left = 3116.0
 offset_top = 1917.0
 offset_right = 3116.0
 offset_bottom = 1917.0
 neighbours = [NodePath("../Bartonia")]
 
-[node name="Elenia" parent="WorldMap/Cities" node_paths=PackedStringArray("neighbours") instance=ExtResource("4_b0wlx")]
+[node name="Elenia" parent="WorldMap/Cities" node_paths=PackedStringArray("neighbours") groups=["city_on_map"] instance=ExtResource("4_b0wlx")]
 offset_left = 2615.0
 offset_top = 2016.0
 offset_right = 2615.0
 offset_bottom = 2016.0
 neighbours = [NodePath("../Bartonia"), NodePath("../Ancient Grove"), NodePath("../Enmouth"), NodePath("../The Trarg")]
 
-[node name="Theira" parent="WorldMap/Cities" node_paths=PackedStringArray("neighbours") instance=ExtResource("4_b0wlx")]
+[node name="Theira" parent="WorldMap/Cities" node_paths=PackedStringArray("neighbours") groups=["city_on_map"] instance=ExtResource("4_b0wlx")]
 offset_left = 2951.0
 offset_top = 1707.0
 offset_right = 2951.0
 offset_bottom = 1707.0
 neighbours = [NodePath("../Bartonia"), NodePath("../Royal Crypt")]
 
-[node name="Royal Crypt" parent="WorldMap/Cities" node_paths=PackedStringArray("neighbours") instance=ExtResource("4_b0wlx")]
+[node name="Royal Crypt" parent="WorldMap/Cities" node_paths=PackedStringArray("neighbours") groups=["city_on_map"] instance=ExtResource("4_b0wlx")]
 offset_left = 2843.0
 offset_top = 1725.0
 offset_right = 2843.0
 offset_bottom = 1725.0
 neighbours = [NodePath("../Theira")]
 
-[node name="Ancient Grove" parent="WorldMap/Cities" node_paths=PackedStringArray("neighbours") instance=ExtResource("4_b0wlx")]
+[node name="Ancient Grove" parent="WorldMap/Cities" node_paths=PackedStringArray("neighbours") groups=["city_on_map"] instance=ExtResource("4_b0wlx")]
 offset_left = 2632.0
 offset_top = 1833.0
 offset_right = 2632.0
 offset_bottom = 1833.0
 neighbours = [NodePath("../Elenia")]
 
-[node name="Enmouth" parent="WorldMap/Cities" node_paths=PackedStringArray("neighbours") instance=ExtResource("4_b0wlx")]
+[node name="Enmouth" parent="WorldMap/Cities" node_paths=PackedStringArray("neighbours") groups=["city_on_map"] instance=ExtResource("4_b0wlx")]
 offset_left = 2424.0
 offset_top = 1803.0
 offset_right = 2424.0
 offset_bottom = 1803.0
 neighbours = [NodePath("../Elenia"), NodePath("../Barthel")]
 
-[node name="Barthel" parent="WorldMap/Cities" node_paths=PackedStringArray("neighbours") instance=ExtResource("4_b0wlx")]
+[node name="Barthel" parent="WorldMap/Cities" node_paths=PackedStringArray("neighbours") groups=["city_on_map"] instance=ExtResource("4_b0wlx")]
 offset_left = 2303.0
 offset_top = 2146.0
 offset_right = 2303.0
 offset_bottom = 2146.0
 neighbours = [NodePath("../Enmouth"), NodePath("../Slaver Camp"), NodePath("../The Trarg"), NodePath("../Dark Path Shrine"), NodePath("../Old Outpost")]
 
-[node name="Slaver Camp" parent="WorldMap/Cities" node_paths=PackedStringArray("neighbours") instance=ExtResource("4_b0wlx")]
+[node name="Slaver Camp" parent="WorldMap/Cities" node_paths=PackedStringArray("neighbours") groups=["city_on_map"] instance=ExtResource("4_b0wlx")]
 offset_left = 2354.0
 offset_top = 2354.0
 offset_right = 2354.0
 offset_bottom = 2354.0
 neighbours = [NodePath("../Barthel")]
 
-[node name="The Trarg" parent="WorldMap/Cities" node_paths=PackedStringArray("neighbours") instance=ExtResource("4_b0wlx")]
+[node name="The Trarg" parent="WorldMap/Cities" node_paths=PackedStringArray("neighbours") groups=["city_on_map"] instance=ExtResource("4_b0wlx")]
 offset_left = 2546.0
 offset_top = 2331.0
 offset_right = 2546.0
 offset_bottom = 2331.0
 neighbours = [NodePath("../Barthel"), NodePath("../Elenia")]
 
-[node name="Dark Path Shrine" parent="WorldMap/Cities" node_paths=PackedStringArray("neighbours") instance=ExtResource("4_b0wlx")]
+[node name="Dark Path Shrine" parent="WorldMap/Cities" node_paths=PackedStringArray("neighbours") groups=["city_on_map"] instance=ExtResource("4_b0wlx")]
 offset_left = 2469.0
 offset_top = 2151.0
 offset_right = 2469.0
 offset_bottom = 2151.0
 neighbours = [NodePath("../Barthel")]
 
-[node name="Old Outpost" parent="WorldMap/Cities" node_paths=PackedStringArray("neighbours") instance=ExtResource("4_b0wlx")]
+[node name="Old Outpost" parent="WorldMap/Cities" node_paths=PackedStringArray("neighbours") groups=["city_on_map"] instance=ExtResource("4_b0wlx")]
 offset_left = 2446.0
 offset_top = 2018.0
 offset_right = 2446.0

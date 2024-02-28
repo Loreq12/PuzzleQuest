@@ -11,19 +11,21 @@ signal city_selected(city: MapCity)
 func _ready():
 	$Label.text = self.name
 	
-	
 func _process(delta):
 	if Engine.is_editor_hint():
 		$Label.text = self.name
 
+func disable_interation():
+	$Collider.set_pickable(false)
+
+func enable_interation():
+	$Collider.set_pickable(true)
 
 func _on_collider_mouse_entered():
 	city_highlight.emit(self)
 
-
 func _on_collider_mouse_exited():
 	city_left.emit(self)
-
 
 func _on_collider_input_event(viewport, event, shape_idx):
 	if event is InputEventMouseButton:
