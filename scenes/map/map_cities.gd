@@ -44,6 +44,7 @@ func transition_player_to_city():
 
 	var path = city_graph.get_point_path(current_city.get_index(), selected_city.get_index())
 	var cities = city_graph.get_id_path(current_city.get_index(), selected_city.get_index())
+	# Skip first one as we're already in a first city
 	for i in range(1, path.size()):
 		tween.tween_property($"../Player", "position", path[i], 1.5)
 		tween.tween_callback(func (): current_city = get_child(cities[i]))
@@ -62,7 +63,7 @@ func _on_city_left(city: MapCity):
 
 func _on_city_selected(city: MapCity):
 	if city == current_city:
-		print("open city menu")
+		state_machine.change_to_show_city_context_menu()
 	else:
 		await state_machine.change_to_city_transition()
 		state_machine.change_to_default_state()

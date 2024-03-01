@@ -1,10 +1,15 @@
-[gd_scene load_steps=4 format=3 uid="uid://suelfuunbtew"]
+[gd_scene load_steps=8 format=3 uid="uid://suelfuunbtew"]
 
 [ext_resource type="Script" path="res://scenes/map/city.gd" id="1_gt6dn"]
 [ext_resource type="Texture2D" uid="uid://b1yrfkwilbify" path="res://scenes/board/gem/sprites/skull.png" id="1_y3yri"]
+[ext_resource type="Script" path="res://scenes/map/map_city_context_menu.gd" id="3_bxeld"]
+[ext_resource type="StyleBox" uid="uid://cqt58y7uhcsxu" path="res://scenes/map/city_context_menu/context_style.tres" id="3_ktops"]
+[ext_resource type="StyleBox" uid="uid://dn612612b6mq7" path="res://scenes/map/city_context_menu/context_item_highlight.tres" id="4_55g7p"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_56ekq"]
 size = Vector2(72, 74)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_3ohj7"]
 
 [node name="Control" type="Control" groups=["interaction_on_travel"]]
 layout_mode = 3
@@ -31,6 +36,46 @@ offset_bottom = 57.0
 text = "Control"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+custom_minimum_size = Vector2(384, 2.08165e-12)
+layout_mode = 0
+offset_left = -192.0
+offset_right = 192.0
+alignment = 1
+
+[node name="ColorRect" type="ColorRect" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="ItemList" type="ItemList" parent="."]
+visible = false
+z_index = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -96.0
+offset_top = -45.5
+offset_right = 96.0
+offset_bottom = 45.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/icon_margin = 10
+theme_override_styles/panel = ExtResource("3_ktops")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_3ohj7")
+theme_override_styles/hovered = ExtResource("4_55g7p")
+theme_override_styles/selected = ExtResource("4_55g7p")
+theme_override_styles/selected_focus = ExtResource("4_55g7p")
+allow_search = false
+auto_height = true
+item_count = 3
+same_column_width = true
+item_0/text = "Your citadel"
+item_1/text = "Tavern"
+item_2/text = "Quit"
+script = ExtResource("3_bxeld")
 
 [connection signal="input_event" from="Collider" to="." method="_on_collider_input_event"]
 [connection signal="mouse_entered" from="Collider" to="." method="_on_collider_mouse_entered"]

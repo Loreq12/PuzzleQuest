@@ -4,6 +4,13 @@ class_name MapCity
 
 @export var neighbours: Array[MapCity] = []
 
+@export_subgroup("Context Menu")
+@export var your_citadel: bool
+@export var missions: bool
+@export var tavern: bool
+@export var shop: bool
+@export var equipment: bool
+
 signal city_highlight(city: MapCity)
 signal city_left(city: MapCity)
 signal city_selected(city: MapCity)
@@ -20,6 +27,12 @@ func disable_interation():
 
 func enable_interation():
 	$Collider.set_pickable(true)
+
+func show_context_menu():
+	$ItemList.visible = true
+
+func hide_context_menu():
+	$ItemList.visible = false
 
 func _on_collider_mouse_entered():
 	city_highlight.emit(self)

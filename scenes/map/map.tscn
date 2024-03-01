@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://ddvw82nigrd36"]
+[gd_scene load_steps=13 format=3 uid="uid://ddvw82nigrd36"]
 
 [ext_resource type="Texture2D" uid="uid://np81gjn3ru1x" path="res://scenes/map/world_map.jpeg" id="1_adjao"]
 [ext_resource type="Script" path="res://scenes/map/map_scroll_control.gd" id="2_4osry"]
@@ -9,6 +9,7 @@
 [ext_resource type="Script" path="res://scenes/map/states/map_default.gd" id="7_mvlr7"]
 [ext_resource type="Script" path="res://scenes/map/states/city_selected.gd" id="7_vquuk"]
 [ext_resource type="Script" path="res://scenes/map/states/city_transition.gd" id="9_abir3"]
+[ext_resource type="Script" path="res://scenes/map/states/context_menu.gd" id="10_vhxks"]
 
 [sub_resource type="Gradient" id="Gradient_lpvxe"]
 offsets = PackedFloat32Array(0, 0.488235, 1)
@@ -54,6 +55,11 @@ offset_top = 1880.0
 offset_right = 2844.0
 offset_bottom = 1880.0
 neighbours = [NodePath("../Gildor"), NodePath("../Siria"), NodePath("../Elenia"), NodePath("../Theira")]
+your_citadel = true
+missions = true
+tavern = true
+shop = true
+equipment = true
 
 [node name="Gildor" parent="WorldMap/Cities" node_paths=PackedStringArray("neighbours") instance=ExtResource("4_b0wlx")]
 offset_left = 2887.0
@@ -146,6 +152,7 @@ script = ExtResource("5_5tn6g")
 current_city = NodePath("../Cities/Bartonia")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -235,6 +242,10 @@ script = ExtResource("7_mvlr7")
 
 [node name="MapCityTransition" type="Node" parent="MapStateMachine" node_paths=PackedStringArray("cities")]
 script = ExtResource("9_abir3")
+cities = NodePath("../../WorldMap/Cities")
+
+[node name="MapCityContextMenu" type="Node" parent="MapStateMachine" node_paths=PackedStringArray("cities")]
+script = ExtResource("10_vhxks")
 cities = NodePath("../../WorldMap/Cities")
 
 [connection signal="city_highlight" from="WorldMap/Cities/Bartonia" to="WorldMap/Cities" method="_on_city_highlight"]
