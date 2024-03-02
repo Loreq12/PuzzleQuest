@@ -3,6 +3,8 @@ extends TextureRect
 var scroll_direction : Vector2 = Vector2.ZERO
 var velocity: Vector2 = Vector2.ONE * 5
 
+@onready var context_menu: MapCityContextMenu = $ContextMenu
+
 func _process(delta):
 	# Negative direction as you're moving plane, not a camera
 	var target_move: Vector2 = -scroll_direction * velocity
@@ -16,6 +18,15 @@ func _process(delta):
 		return
 	
 	position += target_move
+
+
+func show_context_menu(city: MapCity):
+	context_menu.visible = true
+	context_menu.redraw_menu(city)
+
+
+func hide_context_menu(city: MapCity):
+	context_menu.visible = false
 
 
 func _on_scroll_map_left_mouse_entered():

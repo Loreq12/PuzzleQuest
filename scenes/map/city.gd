@@ -1,4 +1,3 @@
-@tool
 extends Control
 class_name MapCity
 
@@ -18,21 +17,11 @@ signal city_selected(city: MapCity)
 func _ready():
 	$Label.text = self.name
 	
-func _process(delta):
-	if Engine.is_editor_hint():
-		$Label.text = self.name
-
 func disable_interation():
 	$Collider.set_pickable(false)
 
 func enable_interation():
 	$Collider.set_pickable(true)
-
-func show_context_menu():
-	$ItemList.visible = true
-
-func hide_context_menu():
-	$ItemList.visible = false
 
 func _on_collider_mouse_entered():
 	city_highlight.emit(self)

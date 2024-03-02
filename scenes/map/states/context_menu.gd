@@ -1,10 +1,12 @@
 extends State
-class_name MapCityContextMenu
 
 @export var cities: CityContainer
+@export var map: TextureRect
 
 func Enter():
-	cities.current_city.show_context_menu()
+	get_tree().call_group("interaction_on_travel", "disable_interation")
+	map.show_context_menu(cities.current_city)
 
 func Exit():
-	cities.current_city.hide_context_menu()	
+	map.hide_context_menu(cities.current_city)
+	get_tree().call_group("interaction_on_travel", "enable_interation")

@@ -7,7 +7,7 @@ func _init_transitions():
 		"MapDefaultState": ["MapCityTransition", "MapCityContextMenu"],
 		"MapCityTransition": ["MapDefaultState"],
 		"MapCitySelected": ["MapDefaultState"],
-		"MapCityContextMenu": ["MapCityTransition"]
+		"MapCityContextMenu": ["MapDefaultState"]
 	}
 
 func change_to_default_state():
