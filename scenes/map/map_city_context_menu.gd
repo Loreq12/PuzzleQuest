@@ -25,7 +25,7 @@ func redraw_menu(city: MapCity):
 		add_item("Equipment", equipment_icon)
 	add_item("Quit", quit_icon)
 	
-	position = Vector2i(city.position.x - size.x / 2, city.position.y - size.y / 2)
+	position = Vector2(city.position.x - size.x / 2, city.position.y - size.y / 2)
 
 func _on_item_selected(index):
 	var icon = get_item_icon(index)

@@ -5,7 +5,7 @@ var velocity: Vector2 = Vector2.ONE * 5
 
 @onready var context_menu: MapCityContextMenu = $ContextMenu
 
-func _process(delta):
+func _process(_delta):
 	# Negative direction as you're moving plane, not a camera
 	var target_move: Vector2 = -scroll_direction * velocity
 	var target_position: Vector2 = position + target_move
@@ -25,7 +25,7 @@ func show_context_menu(city: MapCity):
 	context_menu.redraw_menu(city)
 
 
-func hide_context_menu(city: MapCity):
+func hide_context_menu():
 	context_menu.visible = false
 
 

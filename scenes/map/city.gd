@@ -11,7 +11,7 @@ class_name MapCity
 @export var equipment: bool
 
 signal city_highlight(city: MapCity)
-signal city_left(city: MapCity)
+signal city_left()
 signal city_selected(city: MapCity)
 
 func _ready():
@@ -27,9 +27,9 @@ func _on_collider_mouse_entered():
 	city_highlight.emit(self)
 
 func _on_collider_mouse_exited():
-	city_left.emit(self)
+	city_left.emit()
 
-func _on_collider_input_event(viewport, event, shape_idx):
+func _on_collider_input_event(_viewport, event, _shape_idx):
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 			city_selected.emit(self)

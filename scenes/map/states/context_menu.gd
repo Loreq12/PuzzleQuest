@@ -8,5 +8,5 @@ func Enter():
 	map.show_context_menu(cities.current_city)
 
 func Exit():
-	map.hide_context_menu(cities.current_city)
+	map.hide_context_menu()
 	get_tree().call_group("interaction_on_travel", "enable_interation")

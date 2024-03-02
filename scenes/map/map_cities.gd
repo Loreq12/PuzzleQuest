@@ -1,4 +1,3 @@
-@tool
 extends Control
 class_name CityContainer
 
@@ -16,10 +15,6 @@ func _ready():
 		for neighbour in child.neighbours:
 			city_graph.connect_points(child.get_index(), neighbour.get_index())
 
-func _process(delta):
-	if Engine.is_editor_hint():
-		queue_redraw()
-			
 func _draw():
 	var selected_path_width: int = 3
 	var path: Array = []
@@ -57,7 +52,7 @@ func _on_city_highlight(city: MapCity):
 	selected_city = city
 	queue_redraw()
 
-func _on_city_left(city: MapCity):
+func _on_city_left():
 	selected_city = null
 	queue_redraw()
 
