@@ -12,9 +12,9 @@ func _process(delta):
 	
 	if target_position.x > 0 or target_position.y > 0:
 		return
-	if abs(target_position.x) + get_window().size.x > get_rect().size.x:
+	if abs(target_position.x) + get_viewport_rect().size.x > get_rect().size.x:
 		return
-	if abs(target_position.y) + get_window().size.y > get_rect().size.y:
+	if abs(target_position.y) + get_viewport_rect().size.y > get_rect().size.y:
 		return
 	
 	position += target_move
@@ -29,21 +29,21 @@ func hide_context_menu(city: MapCity):
 	context_menu.visible = false
 
 
-func _on_scroll_map_left_mouse_entered():
+func scroll_map_left_mouse_entered():
 	scroll_direction = Vector2.LEFT
 
 
-func _on_scroll_map_right_mouse_entered():
+func scroll_map_right_mouse_entered():
 	scroll_direction = Vector2.RIGHT
 
 
-func _on_scroll_map_down_mouse_entered():
+func scroll_map_down_mouse_entered():
 	scroll_direction = Vector2.DOWN
 
 
-func _on_scroll_map_up_mouse_entered():
+func scroll_map_up_mouse_entered():
 	scroll_direction = Vector2.UP
 
 
-func _on_scroll_map_mouse_exited():
+func scroll_map_mouse_exited():
 	scroll_direction = Vector2.ZERO
