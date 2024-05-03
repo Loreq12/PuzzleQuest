@@ -23,9 +23,11 @@ func spawn_enemies():
 		var enemy: MapEnemy = preload("res://scenes/map/enemy.tscn").instantiate()
 		enemy.position = spawn_vector
 		add_child(enemy)
+		spawn_points[spawn_vector] = enemy
 
-func _process(delta):
-	pass
+func get_enemy_between_cities(source: MapCity, target: MapCity) -> MapEnemy:
+	var enemy_position = source.position.lerp(target.position, 0.5)
+	return spawn_points[enemy_position]
 
 func _on_enemy_spawner_timeout():
 	# Get current list of deployed enemies and check agains possible positions
@@ -40,9 +42,11 @@ func _on_enemy_spawner_timeout():
 		spawn_vector = p
 		break
 	var random_enemy: MapEnemy = get_children().pick_random()
+	spawn_points[random_enemy.position] = null
 	random_enemy.destroy()
 
 	var enemy: MapEnemy = preload("res://scenes/map/enemy.tscn").instantiate()
 	enemy.position = spawn_vector
+	spawn_points[spawn_vector] = enemy
 	add_child(enemy)
 	enemy.spawn()

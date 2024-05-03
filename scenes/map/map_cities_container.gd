@@ -3,6 +3,7 @@ class_name CityContainer
 
 @export var current_city: MapCity
 @onready var state_machine: MapStateMachine = $"../../MapStateMachine"
+@onready var enemies_container: EnemyContainer = $"../Enemies"
 var selected_city: MapCity = null
 var city_graph := AStar2D.new()
 
@@ -41,7 +42,12 @@ func transition_player_to_city() -> void:
 	var cities = city_graph.get_id_path(current_city.get_index(), selected_city.get_index())
 	# Skip first one as we're already in a first city
 	for i in range(1, path.size()):
-		tween.tween_property($"../Player", "position", path[i], 1.5)
+		var enemy: MapEnemy = enemies_container.get_enemy_between_cities(get_child(cities[i - 1]), get_child(cities[i]))
+		if enemy:
+			tween.tween_property($"../Player", "position", enemy.position, 1.5)
+			break
+		else:
+			tween.tween_property($"../Player", "position", path[i], 1.5)
 		tween.tween_callback(func (): current_city = get_child(cities[i]))
 	await tween.finished
 

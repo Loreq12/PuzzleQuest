@@ -211,9 +211,10 @@ script = ExtResource("7_vquuk")
 [node name="MapDefaultState" type="Node" parent="MapStateMachine"]
 script = ExtResource("7_mvlr7")
 
-[node name="MapCityTransition" type="Node" parent="MapStateMachine" node_paths=PackedStringArray("cities")]
+[node name="MapCityTransition" type="Node" parent="MapStateMachine" node_paths=PackedStringArray("cities", "enemy_spawner")]
 script = ExtResource("9_abir3")
 cities = NodePath("../../WorldMap/Cities")
+enemy_spawner = NodePath("../../WorldMap/EnemySpawner")
 
 [node name="MapCityContextMenu" type="Node" parent="MapStateMachine" node_paths=PackedStringArray("cities", "map")]
 script = ExtResource("10_vhxks")
