@@ -1,11 +1,12 @@
-[gd_scene load_steps=18 format=3 uid="uid://ddvw82nigrd36"]
+[gd_scene load_steps=19 format=3 uid="uid://ddvw82nigrd36"]
 
 [ext_resource type="Texture2D" uid="uid://np81gjn3ru1x" path="res://scenes/map/world_map.jpeg" id="1_adjao"]
 [ext_resource type="Script" path="res://scenes/map/map_camera_movement.gd" id="1_y6uqh"]
 [ext_resource type="Script" path="res://scenes/map/map_scroll_control.gd" id="2_4osry"]
-[ext_resource type="Script" path="res://scenes/map/map_cities.gd" id="3_ijojs"]
+[ext_resource type="Script" path="res://scenes/map/map_cities_container.gd" id="3_ijojs"]
 [ext_resource type="PackedScene" uid="uid://suelfuunbtew" path="res://scenes/map/city.tscn" id="4_b0wlx"]
 [ext_resource type="Script" path="res://scenes/map/map_player.gd" id="5_5tn6g"]
+[ext_resource type="Script" path="res://scenes/map/map_enemies_container.gd" id="6_c525h"]
 [ext_resource type="StyleBox" uid="uid://cqt58y7uhcsxu" path="res://scenes/map/city_context_menu/context_style.tres" id="6_ena30"]
 [ext_resource type="Script" path="res://scenes/map/map_state_machine.gd" id="6_iq01a"]
 [ext_resource type="StyleBox" uid="uid://dn612612b6mq7" path="res://scenes/map/city_context_menu/context_item_highlight.tres" id="7_5a1al"]
@@ -155,6 +156,12 @@ offset_right = 2446.0
 offset_bottom = 2018.0
 neighbours = [NodePath("../Barthel")]
 
+[node name="Enemies" type="Control" parent="WorldMap"]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("6_c525h")
+
 [node name="Player" type="Sprite2D" parent="WorldMap" node_paths=PackedStringArray("current_city")]
 position = Vector2(2844, 1880)
 texture = SubResource("GradientTexture2D_kjfn3")
@@ -189,6 +196,10 @@ item_0/text = "Your citadel"
 item_1/text = "Tavern"
 item_2/text = "Quit"
 script = ExtResource("8_j5yp2")
+
+[node name="EnemySpawner" type="Timer" parent="WorldMap"]
+wait_time = 45.0
+autostart = true
 
 [node name="MapStateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
 script = ExtResource("6_iq01a")
@@ -249,3 +260,4 @@ map = NodePath("../../WorldMap")
 [connection signal="city_left" from="WorldMap/Cities/Old Outpost" to="WorldMap/Cities" method="_on_city_left"]
 [connection signal="city_selected" from="WorldMap/Cities/Old Outpost" to="WorldMap/Cities" method="_on_city_selected"]
 [connection signal="item_selected" from="WorldMap/ContextMenu" to="WorldMap/ContextMenu" method="_on_item_selected"]
+[connection signal="timeout" from="WorldMap/EnemySpawner" to="WorldMap/Enemies" method="_on_enemy_spawner_timeout"]

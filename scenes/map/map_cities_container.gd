@@ -32,7 +32,7 @@ func _draw():
 
 			draw_line(city.position, neighbour.position, Color.BLACK, selected_path_width)
 
-func transition_player_to_city():
+func transition_player_to_city() -> void:
 	var tween := create_tween()
 	tween.set_parallel(false)
 	tween.set_trans(Tween.TRANS_LINEAR)
@@ -45,6 +45,10 @@ func transition_player_to_city():
 		tween.tween_callback(func (): current_city = get_child(cities[i]))
 	await tween.finished
 
+func cities_are_neighbours(source: MapCity, target: MapCity) -> bool:
+	var path: Array = city_graph.get_point_path(source.get_index(), target.get_index())
+	return not path.is_empty()
+	
 func _on_city_highlight(city: MapCity):
 	if city == current_city:
 		return

@@ -93,6 +93,8 @@ texture = ExtResource("2_3yccj")
 centered = false
 
 [node name="MagicCircle" type="Sprite2D" parent="."]
+visible = false
+z_index = 1
 position = Vector2(64, 64)
 scale = Vector2(0.2, 0.2)
 texture = ExtResource("3_hlo65")

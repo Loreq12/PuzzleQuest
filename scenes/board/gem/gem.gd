@@ -6,7 +6,16 @@ class_name Gem
 signal s_gem_selected(gem: Gem)
 
 # DEF
-enum GEM_TYPE_E {RED, BLUE, YELLOW, GREEN}
+enum GEM_TYPE_E {
+	RED,
+	BLUE,
+	YELLOW,
+	GREEN,
+	GOLD,
+	VIOLET,
+	SKULL,
+	SKULL_PLUS
+}
 
 # EXPORTS
 @export var gem_type : GEM_TYPE_E
@@ -72,6 +81,18 @@ func _adjust_gem_color():
 	elif gem_type == GEM_TYPE_E.YELLOW:
 		$Sprite2D.texture = load("res://scenes/board/gem/sprites/yellow.png")
 		$Particle.color = Color(1, 1, 0)
+	elif gem_type == GEM_TYPE_E.GOLD:
+		$Sprite2D.texture = load("res://scenes/board/gem/sprites/gold.png")
+		$Particle.color = Color(1, 1, 0)
+	elif gem_type == GEM_TYPE_E.VIOLET:
+		$Sprite2D.texture = load("res://scenes/board/gem/sprites/violet.png")
+		$Particle.color = Color(1, 1, 0)
+	elif gem_type == GEM_TYPE_E.SKULL:
+		$Sprite2D.texture = load("res://scenes/board/gem/sprites/skull.png")
+		$Particle.color = Color(1, 1, 1)
+	elif gem_type == GEM_TYPE_E.SKULL_PLUS:
+		$Sprite2D.texture = load("res://scenes/board/gem/sprites/skull_plus.png")
+		$Particle.color = Color(1, 1, 1)
 
 # EVENTS
 func _input_event_handle(_viewport, event, _shape_idx):

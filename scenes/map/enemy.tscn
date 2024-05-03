@@ -1,0 +1,65 @@
+[gd_scene load_steps=8 format=3 uid="uid://cha66d45ilol5"]
+
+[ext_resource type="Script" path="res://scenes/map/enemy.gd" id="1_tyo2c"]
+
+[sub_resource type="Gradient" id="Gradient_tp2gv"]
+colors = PackedColorArray(0.652319, 0.450058, 0.560369, 1, 0.339889, 0.580952, 0.590455, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_8baba"]
+gradient = SubResource("Gradient_tp2gv")
+
+[sub_resource type="Gradient" id="Gradient_7tk7b"]
+offsets = PackedFloat32Array(0.0575816, 0.193858, 0.602687)
+colors = PackedColorArray(0.716291, 0.716298, 0.716295, 0.611765, 0.574998, 0.574998, 0.574998, 1, 0.317647, 0.317647, 0.317647, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_1nr0y"]
+gradient = SubResource("Gradient_7tk7b")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+
+[sub_resource type="Gradient" id="Gradient_4wl0s"]
+offsets = PackedFloat32Array(0, 0.138196, 0.357006, 1)
+colors = PackedColorArray(0.83, 0.76941, 0.2241, 0.615686, 0.86, 0.86, 0.86, 0.654902, 0.870588, 0.870588, 0.870588, 0, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_pcge2"]
+gradient = SubResource("Gradient_4wl0s")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+
+[node name="Node2D" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_tyo2c")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = SubResource("GradientTexture2D_8baba")
+
+[node name="Dissapear" type="CPUParticles2D" parent="."]
+emitting = false
+amount = 15
+lifetime = 0.5
+one_shot = true
+speed_scale = 0.8
+randomness = 0.61
+texture = SubResource("GradientTexture2D_1nr0y")
+emission_shape = 1
+emission_sphere_radius = 64.0
+direction = Vector2(2.08165e-12, -100)
+gravity = Vector2(2.08165e-12, 2.08165e-12)
+initial_velocity_min = 117.2
+initial_velocity_max = 117.2
+
+[node name="Appear" type="CPUParticles2D" parent="."]
+emitting = false
+amount = 15
+lifetime = 0.8
+one_shot = true
+speed_scale = 0.8
+randomness = 0.61
+texture = SubResource("GradientTexture2D_pcge2")
+emission_shape = 1
+emission_sphere_radius = 64.0
+direction = Vector2(2.08165e-12, -100)
+gravity = Vector2(2.08165e-12, 2.08165e-12)
+initial_velocity_min = 117.2
+initial_velocity_max = 117.2
