@@ -1,7 +1,6 @@
 extends State
 
-@onready var battle_panel: Panel = $"../../Panel"
-
+@export var battle_panel: Panel
 
 func Enter():
 	battle_panel.visible = true

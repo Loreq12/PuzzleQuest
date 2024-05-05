@@ -15,7 +15,7 @@
 [ext_resource type="Script" path="res://scenes/map/map_city_context_menu.gd" id="8_j5yp2"]
 [ext_resource type="Script" path="res://scenes/map/states/city_transition.gd" id="9_abir3"]
 [ext_resource type="Script" path="res://scenes/map/states/context_menu.gd" id="10_vhxks"]
-[ext_resource type="Script" path="res://scenes/map/battle_popup_tst.gd" id="16_rnotv"]
+[ext_resource type="Script" path="res://scenes/map/battle_popup.gd" id="16_rnotv"]
 [ext_resource type="Script" path="res://scenes/map/states/battle_selector.gd" id="16_ru4jr"]
 
 [sub_resource type="Gradient" id="Gradient_lpvxe"]
@@ -209,21 +209,22 @@ initial_state = NodePath("MapDefaultState")
 [node name="MapCitySelected" type="Node" parent="MapStateMachine"]
 script = ExtResource("7_vquuk")
 
-[node name="MapDefaultState" type="Node" parent="MapStateMachine"]
+[node name="MapDefaultState" type="Node" parent="MapStateMachine" node_paths=PackedStringArray("enemy_spawner")]
 script = ExtResource("7_mvlr7")
+enemy_spawner = NodePath("../../WorldMap/EnemySpawner")
 
-[node name="MapCityTransition" type="Node" parent="MapStateMachine" node_paths=PackedStringArray("cities", "enemy_spawner")]
+[node name="MapCityTransition" type="Node" parent="MapStateMachine" node_paths=PackedStringArray("cities")]
 script = ExtResource("9_abir3")
 cities = NodePath("../../WorldMap/Cities")
-enemy_spawner = NodePath("../../WorldMap/EnemySpawner")
 
 [node name="MapCityContextMenu" type="Node" parent="MapStateMachine" node_paths=PackedStringArray("cities", "map")]
 script = ExtResource("10_vhxks")
 cities = NodePath("../../WorldMap/Cities")
 map = NodePath("../../WorldMap")
 
-[node name="MapBattleSelector" type="Node" parent="MapStateMachine"]
+[node name="MapBattleSelector" type="Node" parent="MapStateMachine" node_paths=PackedStringArray("battle_panel")]
 script = ExtResource("16_ru4jr")
+battle_panel = NodePath("../../Panel")
 
 [node name="Panel" type="Panel" parent="."]
 visible = false
@@ -308,3 +309,4 @@ text = "Battle"
 [connection signal="item_selected" from="WorldMap/ContextMenu" to="WorldMap/ContextMenu" method="_on_item_selected"]
 [connection signal="timeout" from="WorldMap/EnemySpawner" to="WorldMap/Enemies" method="_on_enemy_spawner_timeout"]
 [connection signal="pressed" from="Panel/HBoxContainer/Cancel" to="Panel" method="_on_cancel_pressed"]
+[connection signal="pressed" from="Panel/HBoxContainer/Battle" to="Panel" method="_on_battle_pressed"]

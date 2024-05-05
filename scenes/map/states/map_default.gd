@@ -1,5 +1,9 @@
 extends State
-class_name MapDefaultState
+
+@export var enemy_spawner: Timer
 
 func Enter():
-	pass
+	enemy_spawner.paused = false
+	
+func Exit():
+	enemy_spawner.paused = true
