@@ -1,6 +1,7 @@
 extends Camera2D
 
 @onready var world_map: TextureRect = $"../WorldMap"
+
 func _input(event):
 	if event is InputEventMouseMotion:
 		var viewport_size = get_viewport_rect().size

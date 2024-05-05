@@ -5,10 +5,14 @@ class_name MapStateMachine
 func _init_transitions():
 	states_allowed_transitions = {
 		"MapDefaultState": ["MapCityTransition", "MapCityContextMenu"],
-		"MapCityTransition": ["MapDefaultState"],
+		"MapCityTransition": ["MapDefaultState", "MapBattleSelector"],
 		"MapCitySelected": ["MapDefaultState"],
-		"MapCityContextMenu": ["MapDefaultState"]
+		"MapCityContextMenu": ["MapDefaultState"],
+		"MapBattleSelector": ["MapCityTransition"],
 	}
+
+func change_to_battle_selector():
+	transition_to("MapBattleSelector")
 
 func change_to_default_state():
 	transition_to("MapDefaultState")

@@ -1,7 +1,7 @@
 extends Sprite2D
 
-@export var current_city: MapCity
+@onready var cities_map: CityContainer = $"../Cities"
 
 
 func _ready():
-	position = current_city.position
+	position = cities_map.current_city.position

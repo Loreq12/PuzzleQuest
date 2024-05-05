@@ -4,6 +4,7 @@ class_name CityContainer
 @export var current_city: MapCity
 @onready var state_machine: MapStateMachine = $"../../MapStateMachine"
 @onready var enemies_container: EnemyContainer = $"../Enemies"
+@onready var player: Sprite2D = $"../Player"
 var selected_city: MapCity = null
 var city_graph := AStar2D.new()
 
@@ -33,23 +34,35 @@ func _draw():
 
 			draw_line(city.position, neighbour.position, Color.BLACK, selected_path_width)
 
+func _rollback_player_to_nearest_city(tween: Tween):
+	tween.tween_property(player, "position", current_city.position, 1.5)
+	await tween.finished
+	
+func _transition_player_to_selected_city(tween: Tween):
+	var path = city_graph.get_point_path(current_city.get_index(), selected_city.get_index())
+	var cities = city_graph.get_id_path(current_city.get_index(), selected_city.get_index())
+	# Skip first one as we're already in a first city
+	var enemy: MapEnemy = null
+	for i in range(1, path.size()):
+		enemy = enemies_container.get_enemy_between_cities(get_child(cities[i - 1]), get_child(cities[i]))
+		if enemy:
+			tween.tween_property(player, "position", enemy.position, 1.5)
+			break
+		else:
+			tween.tween_property(player, "position", path[i], 1.5)
+		tween.tween_callback(func (): current_city = get_child(cities[i]))
+	await tween.finished
+
 func transition_player_to_city() -> void:
 	var tween := create_tween()
 	tween.set_parallel(false)
 	tween.set_trans(Tween.TRANS_LINEAR)
-
-	var path = city_graph.get_point_path(current_city.get_index(), selected_city.get_index())
-	var cities = city_graph.get_id_path(current_city.get_index(), selected_city.get_index())
-	# Skip first one as we're already in a first city
-	for i in range(1, path.size()):
-		var enemy: MapEnemy = enemies_container.get_enemy_between_cities(get_child(cities[i - 1]), get_child(cities[i]))
-		if enemy:
-			tween.tween_property($"../Player", "position", enemy.position, 1.5)
-			break
-		else:
-			tween.tween_property($"../Player", "position", path[i], 1.5)
-		tween.tween_callback(func (): current_city = get_child(cities[i]))
-	await tween.finished
+	
+	if player.position != current_city.position:
+		# This will kick your ass when battle will be finished but for now it will work
+		await _rollback_player_to_nearest_city(tween)
+	else:
+		await _transition_player_to_selected_city(tween)
 
 func cities_are_neighbours(source: MapCity, target: MapCity) -> bool:
 	var path: Array = city_graph.get_point_path(source.get_index(), target.get_index())
@@ -71,4 +84,5 @@ func _on_city_selected(city: MapCity):
 		state_machine.change_to_show_city_context_menu()
 	else:
 		await state_machine.change_to_city_transition()
-		state_machine.change_to_default_state()
+		if player.position != current_city.position:
+			state_machine.change_to_battle_selector()
